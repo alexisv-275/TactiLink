@@ -10,22 +10,11 @@ Este documento define las herramientas y la metodología de trabajo para el desa
 * **Control de Versiones:** Git y GitHub
 * **Contenerización:** Docker Desktop
 
-### Stacks Tecnológicos (Elegir 1)
+### Stack Tecnológicos
 
-**Opción 1: Full JavaScript**
-* **Frontend:** React
-* **Backend:** Node.js (con Express)
-* **Servidor:** Nginx (para *reverse proxy* en Docker)
-
-**Opción 2: Python (Ligero)**
 * **Frontend:** HTML5, CSS3, JavaScript (Vanilla)
 * **Backend:** Python (con Flask o FastAPI)
 * **Servidor:** Nginx (para servir estáticos en Docker)
-
-**Opción 3: PHP (Clásico Moderno)**
-* **Frontend:** HTML5, CSS3, JavaScript (Vanilla)
-* **Backend:** PHP (con Slim o modo API de Laravel)
-* **Servidor:** Nginx + PHP-FPM
 
 ## 2. Estrategia de Ramificación (Feature Branching)
 
