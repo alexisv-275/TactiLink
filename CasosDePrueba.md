@@ -12,10 +12,7 @@ Este documento detalla los casos de prueba (CP) basados en los Requerimientos Ge
 |  |  | **RE-1.4:** Transcribir Vocales Acentuadas (á, é, í, ó, ú). |
 |  |  | **RE-1.5:** Transcribir Números (0-9) con el signo de número. |
 |  |  | **RE-1.6:** Transcribir Signos Básicos (punto, coma, mayúscula). |
-| **RG-2** | Generar señalética Braille a partir de textos en español. | **RE-2.1:** Generar una imagen vectorial (SVG) del Braille con dimensiones escalables. |
-|  |  | **RE-2.2:** Asegurar que el formato de salida sea una imagen vectorial de alta calidad. |
-
-
+| **RG-2** | Generar señalética Braille a partir de textos en español. |  |
 
 
 ## **II. Casos de Prueba**
@@ -26,48 +23,77 @@ Este documento detalla los casos de prueba (CP) basados en los Requerimientos Ge
 | :---- | :---- |
 | **ID del Caso** | CP-1.1.01 |
 | **Requisito Asociado** | RE-1.1: Transcribir la Primera Serie (a-j) |
-| **Objetivo** | Verificar la transcripción correcta de la letra 'e'. |
+| **Objetivo** | Verificar la transcripción de toda la Primera Serie (a a j). |
 | **Precondiciones** | El servicio de transcripción está activo. |
-| **Pasos de Ejecución** | 1\. Ingresar el carácter minúscula **e**. 2\. Presionar el botón "Transcribir". |
-| **Resultado Esperado** | La aplicación debe devolver la representación Braille: **15**. |
+| **Pasos de Ejecución** | 1. Ingresar la cadena abcdefghij. 2. Presionar "Transcribir" |
+| **Resultado Esperado** | Representación Braille esperada (separada por espacios): 1 12 14 145 15 124 1245 125 24 245 |
 | **Resultado Obtenido** |  |
 | **Estado** |  |
 | **Análisis (Si Falla)** |  |
-| **ID del Caso** | CP-1.2.02 |
+
+
+
+| Componente | Detalle |
+| :---- | :---- |
+| **ID del Caso** | CP-1.2.01 |
 | **Requisito Asociado** | RE-1.2: Transcribir la Segunda Serie (k-t) |
-| **Objetivo** | Verificar la transcripción correcta de la letra 'm'. |
+| **Objetivo** | Verificar la transcripción de toda la Segunda Serie (k a t). |
 | **Precondiciones** | El servicio de transcripción está activo. |
-| **Pasos de Ejecución** | 1\. Ingresar el carácter minúscula **m**. 2\. Presionar el botón "Transcribir". |
-| **Resultado Esperado** | La aplicación debe devolver la representación Braille: **134**. |
+| **Pasos de Ejecución** | 1. Ingresar la cadena klmnopqrst. 2. Presionar "Transcribir". |
+| **Resultado Esperado** | Representación Braille esperada: 13 123 134 1345 135 1234 12345 1235 234 2345 |
 | **Resultado Obtenido** |  |
 | **Estado** |  |
 | **Análisis (Si Falla)** |  |
-| **ID del Caso** | CP-1.3.03 |
+
+
+| Componente | Detalle |
+| :---- | :---- |
+| **ID del Caso** | CP-1.3.01 |
 | **Requisito Asociado** | RE-1.3: Transcribir la Tercera Serie y Letras Adicionales |
-| **Objetivo** | Verificar la transcripción correcta de la letra 'ñ'. |
+| **Objetivo** | Verificar la transcripción de u, v, x, y, z, ñ, ü, w. |
 | **Precondiciones** | El servicio de transcripción está activo. |
-| **Pasos de Ejecución** | 1\. Ingresar el carácter minúscula **ñ**. 2\. Presionar el botón "Transcribir". |
-| **Resultado Esperado** | La aplicación debe devolver la representación Braille: **12456**. |
+| **Pasos de Ejecución** |1. Ingresar la cadena uvxyzñüw. 2. Presionar "Transcribir".|
+| **Resultado Esperado** | Representación Braille esperada: 136 1236 1346 13456 1356 12456 2456 2346|
 | **Resultado Obtenido** |  |
 | **Estado** |  |
 | **Análisis (Si Falla)** |  |
-| **ID del Caso** | CP-1.4.04 |
+
+| Componente | Detalle |
+| :---- | :---- |
+| **ID del Caso** | CP-1.4.01 |
 | **Requisito Asociado** | RE-1.4: Transcribir Vocales Acentuadas |
-| **Objetivo** | Verificar la transcripción correcta de la vocal acentuada 'í'. |
+| **Objetivo** | Verificar la transcripción de todas las vocales acentuadas. |
 | **Precondiciones** | El servicio de transcripción está activo. |
-| **Pasos de Ejecución** | 1\. Ingresar el carácter **í**. 2\. Presionar el botón "Transcribir". |
-| **Resultado Esperado** | La aplicación debe devolver la representación Braille: **34**. |
+| **Pasos de Ejecución** | 1. Ingresar la cadena áéíóú. 2. Presionar "Transcribir". |
+| **Resultado Esperado** | Representación Braille esperada: 1 2 34 12356 2346 |
 | **Resultado Obtenido** |  |
 | **Estado** |  |
 | **Análisis (Si Falla)** |  |
-| **ID del Caso** | CP-1.5.05 |
+
+| Componente | Detalle |
+| :---- | :---- |
+| **ID del Caso** | CP-1.5.01 |
 | **Requisito Asociado** | RE-1.5: Transcribir Números (0-9) |
-| **Objetivo** | Verificar la transcripción correcta del número '7' con el signo numérico. |
+| **Objetivo** | Verificar una secuencia numérica ('0123456789'), donde el signo solo se pone al inicio. |
 | **Precondiciones** | El servicio de transcripción está activo. |
-| **Pasos de Ejecución** | 1\. Ingresar el número **7**. 2\. Presionar el botón "Transcribir". |
-| **Resultado Esperado** | La aplicación debe devolver la representación Braille (Signo de Número \+ Letra g): **\#1245** |
+| **Pasos de Ejecución** | 1. Ingresar la cadena 0123456789. 2. Presionar "Transcribir". |
+| **Resultado Esperado** | Representación Braille esperada: # 245 1 12 14 145 15 124 1245 125 24|
 | **Resultado Obtenido** |  |
 | **Estado** |  |
+
+| Componente | Detalle |
+| :---- | :---- |
+| **ID del Caso** | CP-1.5.02 |
+| **Requisito Asociado** | RE-1.5: Transcribir Números (0-9) |
+| **Objetivo** | Verificar la transcripción de un número decimal que contiene coma y puntos como separadores de miles. |
+| **Precondiciones** | El servicio de transcripción está activo. |
+| **Pasos de Ejecución** | 1. Ingresar la cadena 2.329,724. 2. Presionar "Transcribir". |
+| **Resultado Esperado** | Representación Braille esperada: #12 256 145 12 145 2 1245 12 145|
+| **Resultado Obtenido** |  |
+| **Estado** |  |
+
+| Componente | Detalle |
+| :---- | :---- |
 | **Análisis (Si Falla)** |  |
 | **ID del Caso** | CP-1.6.06 |
 | **Requisito Asociado** | RE-1.6: Transcribir Signos Básicos |
@@ -78,6 +104,9 @@ Este documento detalla los casos de prueba (CP) basados en los Requerimientos Ge
 | **Resultado Obtenido** |  |
 | **Estado** |  |
 | **Análisis (Si Falla)** |  |
+
+| Componente | Detalle |
+| :---- | :---- |
 | **ID del Caso** | CP-1.6.07 |
 | **Requisito Asociado** | RE-1.6: Transcribir Signos Básicos |
 | **Objetivo** | Verificar la transcripción correcta de una mayúscula ('A'). |
@@ -95,21 +124,13 @@ Estos casos verifican la correcta salida de datos en formato vectorial (SVG) par
 | Componente | Detalle |
 | :---- | :---- |
 | **ID del Caso** | CP-2.1.01 |
-| **Requisito Asociado** | RE-2.1: Generar una imagen vectorial (SVG) |
-| **Objetivo** | Verificar que la API responda con un formato SVG al solicitar señalética. |
-| **Precondiciones** | El servicio de generación de señalética (/api/generar\_senaletica) está activo. |
-| **Pasos de Ejecución** | 1\. Enviar una solicitud POST al endpoint /api/generar\_senaletica con el texto "hola". 2\. Verificar los encabezados de la respuesta. |
-| **Resultado Esperado** | La respuesta debe tener el encabezado Content-Type: image/svg+xml. |
+| **Requisito Asociado** | RG-2: Generar señalética Braille a partir de textos en español.|
+| **Objetivo** | Verificar la generación exitosa de una imagen vectorial (SVG). |
+| **Precondiciones** | El servicio de generación de señalética (/api/generar_senaletica) y la lógica de transcripción están activos. |
+| **Pasos de Ejecución** | 1. Enviar una solicitud al endpoint de generación de señalética con el texto "2". 2. El sistema devuelve una respuesta al navegador para descargar o mostrar el archivo. 3. Verificar los encabezados y el contenido de la respuesta. 4. Ampliar visualmente el archivo SVG generado. |
+| **Resultado Esperado** | 1. La respuesta debe tener el encabezado Content-Type: image/svg+xml. 2. El archivo descargado debe ser un SVG válido que contenga la representación del número 2 (es decir, el signo de número # seguido de la letra b: #12). 3. Al ampliar el SVG, los elementos gráficos (círculos y texto en tinta) deben permanecer nítidos (no pixelados). |
 | **Resultado Obtenido** |  |
 | **Estado** |  |
 | **Análisis (Si Falla)** |  |
-| **ID del Caso** | CP-2.2.02 |
-| **Requisito Asociado** | RE-2.2: Asegurar el formato de alta calidad (escalabilidad) |
-| **Objetivo** | Verificar que el contenido SVG generado sea correcto y contenga todos los puntos Braille para una palabra simple. |
-| **Precondiciones** | El servicio de generación de señalética está activo. |
-| **Pasos de Ejecución** | 1\. Enviar una solicitud con el texto **b**. 2\. Verificar el cuerpo de la respuesta. |
-| **Resultado Esperado** | El cuerpo de la respuesta SVG debe contener una etiqueta de imagen/dibujo (ej., \<circle\> o \<path\>) para los puntos **1** y **2** (correspondientes a la 'b') y el texto en tinta 'b'. |
-| **Resultado Obtenido** |  |
-| **Estado** |  |
-| **Análisis (Si Falla)** |  |
+
 
