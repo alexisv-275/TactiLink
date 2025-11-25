@@ -17,3 +17,4 @@ CMD ["python", "app.py"]
 
 # Exponer el puerto interno de Flask
 EXPOSE 5000
+
