@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Transcriptor Braille</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap");
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #f7fafc;
+      }
+      .braille-output {
+        min-height: 100px;
+      }
+      .svg-container {
+        border: 1px dashed #ccc;
+        padding: 10px;
+        min-height: 150px;
+      }
+    </style>
+  </head>
+  <body class="p-8">
+    <div class="max-w-4xl mx-auto bg-white p-6 shadow-lg rounded-xl">
+      <h1 class="text-3xl font-bold text-gray-800 mb-6">
+        Transcriptor de Braille Español
+      </h1>
+
+      <div class="mb-4">
+        <label for="inputText" class="block text-sm font-medium text-gray-700"
+          >Texto a Transcribir:</label
+        >
+        <textarea
+          id="inputText"
+          rows="4"
+          class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-3 focus:ring-blue-500 focus:border-blue-500"
+          placeholder="Escribe aquí el texto, números o signos a transcribir..."
+        ></textarea>
+      </div>
+
+      <div class="flex space-x-4 mb-8">
+        <button
+          id="transcribeBtn"
+          class="flex-1 bg-green-600 text-white py-2 rounded-md hover:bg-green-700 transition duration-150"
+        >
+          RG-1: Transcribir (Código Numérico)
+        </button>
+        <button
+          id="signageBtn"
+          class="flex-1 bg-indigo-600 text-white py-2 rounded-md hover:bg-indigo-700 transition duration-150"
+        >
+          RG-2: Generar Señalética (SVG)
+        </button>
+      </div>
+
+      <!-- RESULTADOS RG-1 -->
+      <div class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-2">
+          Resultado (Código Braille Numérico):
+        </h2>
+        <div
+          id="brailleOutput"
+          class="braille-output bg-gray-100 p-4 rounded-md text-lg font-mono whitespace-pre-wrap"
+        >
+          Esperando texto...
+        </div>
+      </div>
+
+      <!-- RESULTADOS RG-2 -->
+      <div>
+        <h2 class="text-xl font-semibold text-gray-800 mb-2">
+          Resultado (Señalética SVG):
+        </h2>
+        <div
+          id="svgContainer"
+          class="svg-container flex justify-center items-center"
+        >
+          El SVG generado aparecerá aquí.
+        </div>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const inputText = document.getElementById("inputText");
+        const transcribeBtn = document.getElementById("transcribeBtn");
+        const signageBtn = document.getElementById("signageBtn");
+        const brailleOutput = document.getElementById("brailleOutput");
+        const svgContainer = document.getElementById("svgContainer");
+
+        // Función genérica para enviar datos a la API
+        const fetchData = async (endpoint, method = "POST") => {
+          const text = inputText.value;
+          if (!text.trim()) {
+            alert("Por favor, ingresa texto para transcribir.");
+            return null;
+          }
+
+          try {
+            // Usamos una ruta RELATIVA. Nginx (nuestro proxy) manejará la redirección.
+            const response = await fetch(endpoint, {
+              method: method,
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ text: text }),
+            });
+
+            if (!response.ok) {
+              throw new Error(`Error HTTP: ${response.status}`);
+            }
+
+            return response;
+          } catch (error) {
+            console.error("Error al comunicarse con la API:", error);
+            brailleOutput.textContent = `ERROR: No se pudo conectar con el servicio. Verifica la consola de Docker.`;
+            return null;
+          }
+        };
+
+        // Manejador para RG-1 (Transcripción)
+        transcribeBtn.addEventListener("click", async () => {
+          brailleOutput.textContent = "Transcribiendo...";
+          svgContainer.innerHTML = "El SVG generado aparecerá aquí.";
+
+          const response = await fetchData("/api/transcribe");
+          if (!response) return;
+
+          const data = await response.json();
+          if (data.error) {
+            brailleOutput.textContent = `Error de API: ${data.error}`;
+          } else {
+            // Muestra el código numérico Braille
+            brailleOutput.textContent =
+              data.braille_codes || "No se pudo generar código.";
+          }
+        });
+
+        // Manejador para RG-2 (Señalética SVG)
+        signageBtn.addEventListener("click", async () => {
+          svgContainer.innerHTML = "Generando SVG...";
+          brailleOutput.textContent = "Esperando texto...";
+
+          const response = await fetchData("/api/generar_senaletica");
+          if (!response) return;
+
+          // El tipo de respuesta ES SVG/XML, no JSON
+          const svgText = await response.text();
+
+          // Muestra el SVG inyectándolo directamente en el contenedor
+          svgContainer.innerHTML = svgText;
+        });
+      });
+    </script>
+  </body>
+</html>
