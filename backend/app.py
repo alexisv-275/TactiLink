@@ -64,11 +64,12 @@ def generar_senaletica():
     # IMPORTANTE: Se devuelve el MIME type correcto para SVG
     return app.response_class(response=svg_placeholder, status=200, mimetype='image/svg+xml')
 
-#para que el docker no se cierre solo
-@app.route('/health')
+# Endpoint de health check para Docker
+@app.route('/health', methods=['GET'])
 def health():
-    return {'status': 'healthy'}, 200
+    """Endpoint simple para verificar que el servicio está funcionando."""
+    return jsonify({'status': 'healthy', 'service': 'tactilink-backend'}), 200
 
 if __name__ == '__main__':
-    # Usado solo para pruebas locales (fuera de docker)
+    # Solo para desarrollo local (NO se usa en Docker - Docker usa Gunicorn)
     app.run(debug=True, host='0.0.0.0', port=5000)

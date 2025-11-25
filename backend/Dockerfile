@@ -5,10 +5,6 @@ FROM python:3.11-slim
 # Establecer el directorio de trabajo
 WORKDIR /app
 
-# Instalar curl para healthcheck
-RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
-
-
 # Copiar el archivo de dependencias e instalarlas (para aprovechar el cache de Docker)
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
