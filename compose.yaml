@@ -1,0 +1,26 @@
+services:
+  backend:
+    build: ./backend
+    container_name: tactilink-backend
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./backend:/app
+    environment:
+      - FLASK_ENV=development
+    networks:
+      - tactilink-network
+
+  frontend:
+    build: ./frontend
+    container_name: tactilink-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - tactilink-network
+
+networks:
+  tactilink-network:
+    driver: bridge
