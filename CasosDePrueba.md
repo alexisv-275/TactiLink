@@ -91,10 +91,10 @@ Este documento detalla los casos de prueba (CP) basados en los Requerimientos Ge
 | **Resultado Esperado** | Representación Braille esperada: **Textual**  125 135 123 1 2 134 136 1345 145 135 3 **Numérico** #12 3 145 12 145 2 1245 12 145|
 | **Resultado Obtenido** |  |
 | **Estado** |  |
+| **Análisis (Si Falla)** |  |
 
 | Componente | Detalle |
 | :---- | :---- |
-| **Análisis (Si Falla)** |  |
 | **ID del Caso** | CP-1.6.06 |
 | **Requisito Asociado** | RE-1.6: Transcribir Signos Adicionales|
 | **Objetivo** | Verificar la transcripción correcta de signos adicionales|
