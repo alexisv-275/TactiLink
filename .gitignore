@@ -27,6 +27,11 @@ instance/
 *.seed
 *.pid.lock
 
+# Documentación - Archivos compilados de Sphinx (ignorar solo doctrees, mantener build/html)
+backend/docs/build/doctrees/
+backend/docs/_build/
+backend/docs/source/_build/
+
 # Sistema operativo
 .DS_Store
 Thumbs.db
