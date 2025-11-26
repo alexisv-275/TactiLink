@@ -78,8 +78,8 @@ Este documento detalla los casos de prueba (CP) basados en los Requerimientos Ge
 | **Precondiciones** | El servicio de transcripción está activo. |
 | **Pasos de Ejecución** | 1. Ingresar la cadena 0123456789. 2. Presionar "Transcribir". |
 | **Resultado Esperado** | Representación Braille esperada: # 245 1 12 14 145 15 124 1245 125 24|
-| **Resultado Obtenido** |  | # 245 1 12 14 145 15 124 1245 125 24 |
-| **Estado** |  | PASSED |
+| **Resultado Obtenido** | # 245 1 12 14 145 15 124 1245 125 24 |  
+| **Estado** | PASSED |
 
 | Componente | Detalle |
 | :---- | :---- |
@@ -101,8 +101,8 @@ Este documento detalla los casos de prueba (CP) basados en los Requerimientos Ge
 | **Precondiciones** | El servicio de transcripción está activo. |
 | **Pasos de Ejecución** | 1\. Ingresar: ;:_""!¡¿?()+x=÷- 2\. Presionar el botón "Transcribir". |
 | **Resultado Esperado** | La aplicación debe devolver la representación Braille: 23 25 456 456 2356 235 2356 235 2356 235 2356 235 26 |
-| **Resultado Obtenido** |  | 23 25 456 456 2356 235 2356 235 2356 235 2356 235 26 2356 26 5 126 5 346 346 5 236 2356 2356 256 256 1346 2356 256 36 |
-| **Estado** |  | PASSED |
+| **Resultado Obtenido** | 23 25 456 456 2356 235 2356 235 2356 235 2356 235 26 2356 26 5 126 5 346 346 5 236 2356 2356 256 256 1346 2356 256 36 | 
+| **Estado** | PASSED |
 | **Análisis (Si Falla)** |  |
 
 | Componente | Detalle |
