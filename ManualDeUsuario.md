@@ -10,11 +10,12 @@ Para usar TactiLink, solo necesita un navegador web actualizado (como Chrome, Fi
 Abra su navegador y diríjase a la dirección de la aplicación.
 Si está usando la versión de desarrollo local: http://localhost
 ## Interfaz:
-La pantalla principal mostrará un área de entrada de texto y dos botones principales.
+La pantalla principal mostrará un área de entrada de texto y tres botones principales.
 
-<img width="764" height="603" alt="imagen" src="https://github.com/user-attachments/assets/c40d7e2b-4eaf-4b02-b240-bc2b37a64bed" />
+<img width="896" height="704" alt="image" src="https://github.com/user-attachments/assets/58a00379-3edd-4df0-a0d8-4ee7a8212f28" />
 
-La aplicación ofrece dos funciones principales: Transcribir (obtener el código de puntos) y Generar Señalética (obtener el archivo vectorial SVG).
+
+La aplicación ofrece tres funciones principales: Transcribir (Transcribir (Código numérico)) y Generar Señalética (Generar Señalética (SVG)) y descargar el SVG (Descargar SVG).
 
 ### Transcribir a Código Braille
 
@@ -27,7 +28,15 @@ Esta es la función para obtener la secuencia de números que representan los pu
 Esta función crea el archivo de imagen vectorial que necesitas para mandar a imprimir o fabricar la señalética.
 1. Asegúrate de que el texto deseado esté en la caja de entrada.
 2. Presiona el botón "Generar Señalética" (el botón azul).
-3. El sistema procesará el texto, creará la imagen vectorial y tu navegador descargará automáticamente el archivo .svg.
+3. El sistema procesará el texto, creará la imagen vectorial y se visualará en la página web
+
+### Descargar SVG
+Esta función permite descargar de manera local en formato SVG.
+1. Asegurar que primero se genere el SVG en el botón de Generar Señaletica.
+2. Presiona el botón "Descargar SVG" (el botón de color morado).
+3. El sistema abrirá el explorador de archivos para seleccionar en donde descargar el archivo SVG, a la vez que puede cambiar el nombre del archivo.
+4. Presiona Guardar.
+5. Verificar en la carpeta seleccionada el archivo.
 
 
 
