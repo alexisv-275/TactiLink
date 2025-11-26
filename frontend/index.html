@@ -10,7 +10,6 @@
       @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap");
       body {
         font-family: "Inter", sans-serif;
-        /* background-color: #f7fafc; */
         background-color: #e5e7eb;
       }
       .braille-output {
@@ -89,7 +88,7 @@
           id="svgContainer"
           class="svg-container flex justify-center items-center bg-gray-50"
         >
-          El SVG generado aparecerá aquí.
+          Presiona el botón para generar la señalética SVG.
         </div>
       </div>
     </div>
@@ -99,8 +98,11 @@
         const inputText = document.getElementById("inputText");
         const transcribeBtn = document.getElementById("transcribeBtn");
         const signageBtn = document.getElementById("signageBtn");
+        const downloadSvgBtn = document.getElementById("downloadSvgBtn");
         const brailleOutput = document.getElementById("brailleOutput");
         const svgContainer = document.getElementById("svgContainer");
+
+        let currentSvgText = null; // Almacena el SVG generado
 
         // Función genérica para enviar datos a la API
         const fetchData = async (endpoint, method = "POST") => {
@@ -133,7 +135,8 @@
         // Manejador para RG-1 (Transcripción)
         transcribeBtn.addEventListener("click", async () => {
           brailleOutput.textContent = "Transcribiendo...";
-          svgContainer.innerHTML = "El SVG generado aparecerá aquí.";
+          svgContainer.innerHTML = "Puedes generar la señaletica presionando el botón Generar Señaletica.";
+          currentSvgText = null;
 
           const response = await fetchData("/api/transcribe");
           if (!response) return;
@@ -151,16 +154,51 @@
         // Manejador para RG-2 (Señalética SVG)
         signageBtn.addEventListener("click", async () => {
           svgContainer.innerHTML = "Generando SVG...";
-          brailleOutput.textContent = "Esperando texto...";
 
           const response = await fetchData("/api/generar_senaletica");
-          if (!response) return;
+          if (!response) {
+            svgContainer.innerHTML = "Error: No se pudo conectar con el servidor.";
+            return;
+          }
 
           // El tipo de respuesta ES SVG/XML, no JSON
           const svgText = await response.text();
 
+          // Guardar el SVG para descarga posterior
+          currentSvgText = svgText;
+
           // Muestra el SVG inyectándolo directamente en el contenedor
           svgContainer.innerHTML = svgText;
+        });
+
+        // Manejador para descargar SVG
+        downloadSvgBtn.addEventListener("click", () => {
+          if (!currentSvgText) {
+            alert("Primero debes generar la señalética SVG.");
+            return;
+          }
+
+          try {
+            const blob = new Blob([currentSvgText], { type: 'image/svg+xml;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            const filename = `senaletica_braille_${inputText.value.replace(/[^a-zA-Z0-9]/g, '_')}.svg`;
+            
+            a.href = url;
+            a.download = filename;
+            a.style.display = 'none';
+            
+            document.body.appendChild(a);
+            a.click();
+            
+            setTimeout(() => {
+              document.body.removeChild(a);
+              URL.revokeObjectURL(url);
+            }, 100);
+          } catch (error) {
+            console.error('Error al descargar:', error);
+            alert("Error al descargar el archivo SVG.");
+          }
         });
       });
     </script>
