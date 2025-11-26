@@ -113,8 +113,8 @@ Este documento detalla los casos de prueba (CP) basados en los Requerimientos Ge
 | **Precondiciones** | El servicio de transcripción está activo. |
 | **Pasos de Ejecución** | 1\. Ingresar el texto **A**. 2\. Presionar el botón "Transcribir". |
 | **Resultado Esperado** | La aplicación debe devolver la representación Braille (Signo de Mayúscula \+ Letra a): **6** seguido de **1**. |
-| **Resultado Obtenido** |  |
-| **Estado** |  |
+| **Resultado Obtenido** | 6 1 |
+| **Estado** | PASSED |
 | **Análisis (Si Falla)** |  |
 
 ### **B. Pruebas de Generación de Señalética (RG-2)**
@@ -129,8 +129,8 @@ Estos casos verifican la correcta salida de datos en formato vectorial (SVG) par
 | **Precondiciones** | El servicio de generación de señalética (/api/generar_senaletica) y la lógica de transcripción están activos. |
 | **Pasos de Ejecución** | 1. Enviar una solicitud al endpoint de generación de señalética con el texto "2". 2. El sistema devuelve una respuesta al navegador para descargar o mostrar el archivo. 3. Verificar los encabezados y el contenido de la respuesta. 4. Ampliar visualmente el archivo SVG generado. |
 | **Resultado Esperado** | 1. La respuesta debe tener el encabezado Content-Type: image/svg+xml. 2. El archivo descargado debe ser un SVG válido que contenga la representación del número 2 (es decir, el signo de número # seguido de la letra b: #12). 3. Al ampliar el SVG, los elementos gráficos (círculos y texto en tinta) deben permanecer nítidos (no pixelados). |
-| **Resultado Obtenido** |  |
-| **Estado** |  |
+| **Resultado Obtenido** | senaletica_braile_2.svg |
+| **Estado** | PASSED |
 | **Análisis (Si Falla)** |  |
 
 
