@@ -102,8 +102,9 @@ Este documento detalla los casos de prueba (CP) basados en los Requerimientos Ge
 | **Pasos de Ejecución** | 1\. Ingresar: ;:_""!¡¿?()+x=÷- 2\. Presionar el botón "Transcribir". |
 | **Resultado Esperado** | La aplicación debe devolver la representación Braille: 23 25 456 456 2356 235 2356 235 2356 235 2356 235 26 |
 | **Resultado Obtenido** | 23 25 456 456 2356 235 2356 235 2356 235 2356 235 26 2356 26 5 126 5 346 346 5 236 2356 2356 256 256 1346 2356 256 36 | 
-| **Estado** | PASSED |
-| **Análisis (Si Falla)** |  |
+| **Estado** | NO PASSED |
+| **Análisis (Si Falla)** |  Muestra los simbolos correctamente, el problema esta con el simbolo ®*" , cuando esta entre signos o entre numeros 
+detecta la multimiplcación pero cuando hay caracteres normales/alfanumericos no dectecta el simbolo, sino la letra "x" del abecedario.|
 
 | Componente | Detalle |
 | :---- | :---- |
