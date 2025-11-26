@@ -27,8 +27,8 @@ Este documento detalla los casos de prueba (CP) basados en los Requerimientos Ge
 | **Precondiciones** | El servicio de transcripción está activo. |
 | **Pasos de Ejecución** | 1. Ingresar la cadena abcdefghij. 2. Presionar "Transcribir" |
 | **Resultado Esperado** | Representación Braille esperada (separada por espacios): 1 12 14 145 15 124 1245 125 24 245 |
-| **Resultado Obtenido** |  | 1 12 14 145 15 124 1245 125 24 245
-| **Estado** |  | PASSED
+| **Resultado Obtenido** | 1 12 14 145 15 124 1245 125 24 245 | 
+| **Estado** | PASSED  |
 | **Análisis (Si Falla)** |  | 
 
 
@@ -41,8 +41,8 @@ Este documento detalla los casos de prueba (CP) basados en los Requerimientos Ge
 | **Precondiciones** | El servicio de transcripción está activo. |
 | **Pasos de Ejecución** | 1. Ingresar la cadena klmnopqrst. 2. Presionar "Transcribir". |
 | **Resultado Esperado** | Representación Braille esperada: 13 123 134 1345 135 1234 12345 1235 234 2345 |
-| **Resultado Obtenido** |  | 13 123 134 1345 135 1234 12345 1235 234 2345
-| **Estado** |  | PASSED
+| **Resultado Obtenido** | 13 123 134 1345 135 1234 12345 1235 234 2345 |
+| **Estado** | PASSED | 
 | **Análisis (Si Falla)** |  |
 
 
@@ -54,8 +54,8 @@ Este documento detalla los casos de prueba (CP) basados en los Requerimientos Ge
 | **Precondiciones** | El servicio de transcripción está activo. |
 | **Pasos de Ejecución** |1. Ingresar la cadena uvxyzñüw. 2. Presionar "Transcribir".|
 | **Resultado Esperado** | Representación Braille esperada: 136 1236 1346 13456 1356 12456 2456 2346|
-| **Resultado Obtenido** |  |
-| **Estado** |  |
+| **Resultado Obtenido** | 136 1236 1346 13456 1356 12456 2456 2346 |
+| **Estado** | PASSED |
 | **Análisis (Si Falla)** |  |
 
 | Componente | Detalle |
@@ -66,8 +66,8 @@ Este documento detalla los casos de prueba (CP) basados en los Requerimientos Ge
 | **Precondiciones** | El servicio de transcripción está activo. |
 | **Pasos de Ejecución** | 1. Ingresar la cadena áéíóú. 2. Presionar "Transcribir". |
 | **Resultado Esperado** | Representación Braille esperada: 1 2 34 12356 2346 |
-| **Resultado Obtenido** |  |
-| **Estado** |  |
+| **Resultado Obtenido** | 1 2 34 12356 2346 |
+| **Estado** | PASSED |
 | **Análisis (Si Falla)** |  |
 
 | Componente | Detalle |
