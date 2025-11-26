@@ -84,11 +84,11 @@ Este documento detalla los casos de prueba (CP) basados en los Requerimientos Ge
 | Componente | Detalle |
 | :---- | :---- |
 | **ID del Caso** | CP-1.5.02 |
-| **Requisito Asociado** | RE-1.5: Transcribir Números (0-9) |
-| **Objetivo** | Verificar la transcripción de un número decimal que contiene coma y puntos como separadores de miles. |
+| **Requisito Asociado** | RE-1.5: Transcribir Signos Básicos |
+| **Objetivo** | Verificar la transcripción de la coma (,) y el punto (.) en contexto textual y numérico. |
 | **Precondiciones** | El servicio de transcripción está activo. |
-| **Pasos de Ejecución** | 1. Ingresar la cadena 2.329,724. 2. Presionar "Transcribir". |
-| **Resultado Esperado** | Representación Braille esperada: #12 256 145 12 145 2 1245 12 145|
+| **Pasos de Ejecución** | **Textual** 1.Ingresar el texto Hola, mundo. 2.Presionar el botón "Transcribir".**Numérico** 1. Ingresar la cadena 2.329,724. 2. Presionar "Transcribir". |
+| **Resultado Esperado** | Representación Braille esperada: **Textual**  125 135 123 1 2 134 136 1345 145 135 3 **Numérico** #12 3 145 12 145 2 1245 12 145|
 | **Resultado Obtenido** |  |
 | **Estado** |  |
 
@@ -96,11 +96,11 @@ Este documento detalla los casos de prueba (CP) basados en los Requerimientos Ge
 | :---- | :---- |
 | **Análisis (Si Falla)** |  |
 | **ID del Caso** | CP-1.6.06 |
-| **Requisito Asociado** | RE-1.6: Transcribir Signos Básicos |
-| **Objetivo** | Verificar la transcripción de la coma (,) y el punto (.). |
+| **Requisito Asociado** | RE-1.6: Transcribir Signos Adicionales|
+| **Objetivo** | Verificar la transcripción correcta de signos adicionales|
 | **Precondiciones** | El servicio de transcripción está activo. |
-| **Pasos de Ejecución** | 1\. Ingresar el texto **,.**. 2\. Presionar el botón "Transcribir". |
-| **Resultado Esperado** | La aplicación debe devolver la representación Braille: **2** seguido de **256**. |
+| **Pasos de Ejecución** | 1\. Ingresar: ;:_""!¡¿?()+x=÷- 2\. Presionar el botón "Transcribir". |
+| **Resultado Esperado** | La aplicación debe devolver la representación Braille: 23 25 36 236 235 26 126 453 235 236  2356 256 36 |
 | **Resultado Obtenido** |  |
 | **Estado** |  |
 | **Análisis (Si Falla)** |  |
@@ -108,7 +108,7 @@ Este documento detalla los casos de prueba (CP) basados en los Requerimientos Ge
 | Componente | Detalle |
 | :---- | :---- |
 | **ID del Caso** | CP-1.6.07 |
-| **Requisito Asociado** | RE-1.6: Transcribir Signos Básicos |
+| **Requisito Asociado** | RE-1.6: Transcribir Signos Adicionales |
 | **Objetivo** | Verificar la transcripción correcta de una mayúscula ('A'). |
 | **Precondiciones** | El servicio de transcripción está activo. |
 | **Pasos de Ejecución** | 1\. Ingresar el texto **A**. 2\. Presionar el botón "Transcribir". |
