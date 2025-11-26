@@ -27,9 +27,9 @@ Este documento detalla los casos de prueba (CP) basados en los Requerimientos Ge
 | **Precondiciones** | El servicio de transcripción está activo. |
 | **Pasos de Ejecución** | 1. Ingresar la cadena abcdefghij. 2. Presionar "Transcribir" |
 | **Resultado Esperado** | Representación Braille esperada (separada por espacios): 1 12 14 145 15 124 1245 125 24 245 |
-| **Resultado Obtenido** |  |
-| **Estado** |  |
-| **Análisis (Si Falla)** |  |
+| **Resultado Obtenido** |  | 1 12 14 145 15 124 1245 125 24 245
+| **Estado** |  | PASSED
+| **Análisis (Si Falla)** |  | 
 
 
 
@@ -41,8 +41,8 @@ Este documento detalla los casos de prueba (CP) basados en los Requerimientos Ge
 | **Precondiciones** | El servicio de transcripción está activo. |
 | **Pasos de Ejecución** | 1. Ingresar la cadena klmnopqrst. 2. Presionar "Transcribir". |
 | **Resultado Esperado** | Representación Braille esperada: 13 123 134 1345 135 1234 12345 1235 234 2345 |
-| **Resultado Obtenido** |  |
-| **Estado** |  |
+| **Resultado Obtenido** |  | 13 123 134 1345 135 1234 12345 1235 234 2345
+| **Estado** |  | PASSED
 | **Análisis (Si Falla)** |  |
 
 
