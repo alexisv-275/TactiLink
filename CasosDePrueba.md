@@ -10,8 +10,8 @@ Este documento detalla los casos de prueba (CP) basados en los Requerimientos Ge
 |  |  | **RE-1.2:** Transcribir la Segunda Serie (k-t). |
 |  |  | **RE-1.3:** Transcribir la Tercera Serie y Letras Adicionales (u, v, x, y, z, ñ, ü, w). |
 |  |  | **RE-1.4:** Transcribir Vocales Acentuadas (á, é, í, ó, ú). |
-|  |  | **RE-1.5:** Transcribir Números (0-9) con el signo de número. |
-|  |  | **RE-1.6:** Transcribir Signos Básicos (punto, coma, mayúscula). |
+|  |  | **RE-1.5:** Transcribir Números (0-9) Y signos bàsicos |
+|  |  | **RE-1.6:** Transcribir Signos Adicionales y mayùsuclas. |
 | **RG-2** | Generar señalética Braille a partir de textos en español. |  |
 
 
