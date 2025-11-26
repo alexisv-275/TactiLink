@@ -88,9 +88,9 @@ Este documento detalla los casos de prueba (CP) basados en los Requerimientos Ge
 | **Objetivo** | Verificar la transcripción de la coma (,) y el punto (.) en contexto textual y numérico. |
 | **Precondiciones** | El servicio de transcripción está activo. |
 | **Pasos de Ejecución** | **Textual** 1.Ingresar el texto Hola, mundo. 2.Presionar el botón "Transcribir".**Numérico** 1. Ingresar la cadena 2.329,724. 2. Presionar "Transcribir". |
-| **Resultado Esperado** | Representación Braille esperada: **Textual**  125 135 123 1 2 134 136 1345 145 135 3 **Numérico** #12 3 145 12 145 2 1245 12 145|
-| **Resultado Obtenido** |  |
-| **Estado** |  |
+| **Resultado Esperado** | Representación Braille esperada: **Textual**  125 135 123 1 2 134 136 1345 145 135 3 **Numérico** #12 3 145 12 145 2 1245 12 145 3|
+| **Resultado Obtenido** | **Textual:** 6 125 135 123 1 2   134 136 1345 145 135 3 **Numérica:** # 12 3 14 12 24 2 1245 12 145 3 |
+| **Estado** | PASSED |
 | **Análisis (Si Falla)** |  |
 
 | Componente | Detalle |
