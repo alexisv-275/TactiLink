@@ -4,7 +4,7 @@ El sistema TactiLink es una herramienta web diseñada para transcribir textos de
 
 # Guía de Uso
 
-Para usar TactiLink, solo necesita un navegador web actualizado (como Chrome, Firefox, o Edge).
+Para usar TactiLink, solo necesita un navegador web actualizado (como puede ser Chrome, Firefox, o Edge).
 
 ## Enlace de Acceso: 
 Abra su navegador y diríjase a la dirección de la aplicación.
