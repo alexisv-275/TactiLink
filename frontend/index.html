@@ -4,13 +4,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Transcriptor Braille</title>
+    <title>TactiLink</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
       @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap");
       body {
         font-family: "Inter", sans-serif;
-        background-color: #f7fafc;
+        background-color: #e5e7eb;
       }
       .braille-output {
         min-height: 100px;
@@ -45,13 +45,13 @@
           id="transcribeBtn"
           class="flex-1 bg-green-600 text-white py-2 rounded-md hover:bg-green-700 transition duration-150"
         >
-          RG-1: Transcribir (Código Numérico)
+          Transcribir (Código Numérico)
         </button>
         <button
           id="signageBtn"
           class="flex-1 bg-indigo-600 text-white py-2 rounded-md hover:bg-indigo-700 transition duration-150"
         >
-          RG-2: Generar Señalética (SVG)
+          Generar Señalética (SVG)
         </button>
       </div>
 
@@ -70,14 +70,25 @@
 
       <!-- RESULTADOS RG-2 -->
       <div>
-        <h2 class="text-xl font-semibold text-gray-800 mb-2">
-          Resultado (Señalética SVG):
-        </h2>
+        <div class="flex justify-between items-center mb-2">
+          <h2 class="text-xl font-semibold text-gray-800">
+            Resultado (Señalética SVG):
+          </h2>
+          <button
+            id="downloadSvgBtn"
+            class="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 transition duration-150 flex items-center gap-2 text-sm font-medium"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
+            </svg>
+            Descargar SVG
+          </button>
+        </div>
         <div
           id="svgContainer"
-          class="svg-container flex justify-center items-center"
+          class="svg-container flex justify-center items-center bg-gray-50"
         >
-          El SVG generado aparecerá aquí.
+          Presiona el botón para generar la señalética SVG.
         </div>
       </div>
     </div>
@@ -87,8 +98,11 @@
         const inputText = document.getElementById("inputText");
         const transcribeBtn = document.getElementById("transcribeBtn");
         const signageBtn = document.getElementById("signageBtn");
+        const downloadSvgBtn = document.getElementById("downloadSvgBtn");
         const brailleOutput = document.getElementById("brailleOutput");
         const svgContainer = document.getElementById("svgContainer");
+
+        let currentSvgText = null; // Almacena el SVG generado
 
         // Función genérica para enviar datos a la API
         const fetchData = async (endpoint, method = "POST") => {
@@ -121,7 +135,8 @@
         // Manejador para RG-1 (Transcripción)
         transcribeBtn.addEventListener("click", async () => {
           brailleOutput.textContent = "Transcribiendo...";
-          svgContainer.innerHTML = "El SVG generado aparecerá aquí.";
+          svgContainer.innerHTML = "Puedes generar la señaletica presionando el botón Generar Señaletica.";
+          currentSvgText = null;
 
           const response = await fetchData("/api/transcribe");
           if (!response) return;
@@ -139,16 +154,51 @@
         // Manejador para RG-2 (Señalética SVG)
         signageBtn.addEventListener("click", async () => {
           svgContainer.innerHTML = "Generando SVG...";
-          brailleOutput.textContent = "Esperando texto...";
 
           const response = await fetchData("/api/generar_senaletica");
-          if (!response) return;
+          if (!response) {
+            svgContainer.innerHTML = "Error: No se pudo conectar con el servidor.";
+            return;
+          }
 
           // El tipo de respuesta ES SVG/XML, no JSON
           const svgText = await response.text();
 
+          // Guardar el SVG para descarga posterior
+          currentSvgText = svgText;
+
           // Muestra el SVG inyectándolo directamente en el contenedor
           svgContainer.innerHTML = svgText;
+        });
+
+        // Manejador para descargar SVG
+        downloadSvgBtn.addEventListener("click", () => {
+          if (!currentSvgText) {
+            alert("Primero debes generar la señalética SVG.");
+            return;
+          }
+
+          try {
+            const blob = new Blob([currentSvgText], { type: 'image/svg+xml;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            const filename = `senaletica_braille_${inputText.value.replace(/[^a-zA-Z0-9]/g, '_')}.svg`;
+            
+            a.href = url;
+            a.download = filename;
+            a.style.display = 'none';
+            
+            document.body.appendChild(a);
+            a.click();
+            
+            setTimeout(() => {
+              document.body.removeChild(a);
+              URL.revokeObjectURL(url);
+            }, 100);
+          } catch (error) {
+            console.error('Error al descargar:', error);
+            alert("Error al descargar el archivo SVG.");
+          }
         });
       });
     </script>
