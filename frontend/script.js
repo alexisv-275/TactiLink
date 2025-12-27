@@ -1,0 +1,243 @@
+/**
+ * TactiLink - Script Principal
+ * Lógica de transcripción bidireccional Braille ↔ Español
+ * y generación de señalética SVG
+ */
+
+document.addEventListener("DOMContentLoaded", () => {
+  // ========== ELEMENTOS DEL DOM ==========
+  const brailleInput = document.getElementById('braille-input');
+  const spanishInput = document.getElementById('spanish-input');
+  const btnToSpanish = document.getElementById('btn-to-spanish');
+  const btnToBraille = document.getElementById('btn-to-braille');
+  const btnClear = document.getElementById('btn-clear');
+  const btnDownloadSVG = document.getElementById('btn-download-svg');
+  const btnDownloadPNG = document.getElementById('btn-download-png');
+  const btnGenerateEspejo = document.getElementById('btn-generate-espejo');
+  const visualPreview = document.getElementById('visual-preview');
+  const espejoPreview = document.getElementById('espejo-preview');
+
+  // Variables globales para almacenar SVGs
+  let currentSvgNormal = null;
+  let currentSvgEspejo = null;
+
+  // ========== FUNCIONES AUXILIARES ==========
+
+  /**
+   * Función genérica para hacer peticiones POST a la API
+   * @param {string} endpoint - Ruta del endpoint (ej: '/api/transcribe')
+   * @param {object} data - Datos a enviar en el body
+   * @returns {Promise<Response|null>} - Respuesta del fetch o null si hay error
+   */
+  const fetchAPI = async (endpoint, data) => {
+    try {
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error HTTP: ${response.status}`);
+      }
+
+      return response;
+    } catch (error) {
+      console.error(`Error al comunicarse con ${endpoint}:`, error);
+      alert(`ERROR: No se pudo conectar con el servicio. Verifica que Docker esté ejecutándose.`);
+      return null;
+    }
+  };
+
+  /**
+   * Descarga un archivo desde contenido de texto
+   * @param {string} content - Contenido del archivo
+   * @param {string} filename - Nombre del archivo a descargar
+   * @param {string} mimeType - Tipo MIME del archivo
+   */
+  const downloadFile = (content, filename, mimeType) => {
+    try {
+      const blob = new Blob([content], { type: mimeType });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      
+      a.href = url;
+      a.download = filename;
+      a.style.display = 'none';
+      
+      document.body.appendChild(a);
+      a.click();
+      
+      setTimeout(() => {
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }, 100);
+    } catch (error) {
+      console.error('Error al descargar archivo:', error);
+      alert('Error al descargar el archivo.');
+    }
+  };
+
+  /**
+   * Limpia el nombre de archivo removiendo caracteres no permitidos
+   * @param {string} text - Texto a limpiar
+   * @returns {string} - Texto limpio para nombre de archivo
+   */
+  const cleanFilename = (text) => {
+    return text.replace(/[^a-zA-Z0-9áéíóúñü]/g, '_').substring(0, 50);
+  };
+
+  /**
+   * Muestra un mensaje de placeholder en un contenedor
+   * @param {HTMLElement} container - Contenedor donde mostrar el mensaje
+   * @param {string} message - Mensaje a mostrar
+   */
+  const showPlaceholder = (container, message) => {
+    container.innerHTML = `<p class="text-text-secondary-light dark:text-text-secondary-dark text-sm">${message}</p>`;
+  };
+
+  // ========== A1: TRANSCRIPCIÓN TEXTO → BRAILLE ==========
+
+  /**
+   * Transcribe texto español a código Braille numérico
+   */
+  const transcribeTextToBraille = async () => {
+    const text = spanishInput.value.trim();
+    
+    if (!text) {
+      alert('Por favor, ingresa texto en español para transcribir.');
+      return;
+    }
+
+    // Mostrar estado de carga
+    brailleInput.value = 'Transcribiendo...';
+    showPlaceholder(visualPreview, 'Generando vista previa...');
+
+    const response = await fetchAPI('/api/transcribe', { text });
+    
+    if (!response) {
+      brailleInput.value = '';
+      showPlaceholder(visualPreview, 'Error al transcribir.');
+      return;
+    }
+
+    const data = await response.json();
+    
+    if (data.error) {
+      brailleInput.value = '';
+      alert(`Error de API: ${data.error}`);
+      showPlaceholder(visualPreview, 'Error en la transcripción.');
+    } else {
+      // Mostrar códigos Braille en el textarea
+      brailleInput.value = data.braille_codes || 'No se pudo generar código.';
+      
+      // Generar SVG automáticamente para vista previa
+      await generateSVGPreview(text);
+    }
+  };
+
+  /**
+   * Genera el SVG y lo muestra en la vista previa (sin descargar)
+   * @param {string} text - Texto para generar el SVG
+   */
+  const generateSVGPreview = async (text) => {
+    showPlaceholder(visualPreview, 'Generando SVG...');
+
+    const response = await fetchAPI('/api/generar_senaletica', { text });
+    
+    if (!response) {
+      showPlaceholder(visualPreview, 'Error al generar SVG.');
+      return;
+    }
+
+    // El endpoint devuelve SVG como texto, no JSON
+    const svgText = await response.text();
+    
+    // Guardar SVG para uso posterior
+    currentSvgNormal = svgText;
+
+    // Mostrar SVG en la vista previa
+    visualPreview.innerHTML = svgText;
+  };
+
+  // ========== A2: DESCARGA DE SVG NORMAL ==========
+
+  /**
+   * Descarga el SVG de la señalética normal
+   * Si ya existe un SVG generado, lo descarga directamente
+   * Si no, genera uno nuevo
+   */
+  const downloadSVGNormal = async () => {
+    const text = spanishInput.value.trim();
+    
+    if (!text) {
+      alert('Por favor, ingresa texto en español para generar el SVG.');
+      return;
+    }
+
+    // Si no hay SVG generado, generarlo primero
+    if (!currentSvgNormal) {
+      await generateSVGPreview(text);
+    }
+
+    // Si después de intentar generar sigue sin SVG, salir
+    if (!currentSvgNormal) {
+      alert('No se pudo generar el SVG.');
+      return;
+    }
+
+    // Descargar el SVG
+    const filename = `senaletica_braille_${cleanFilename(text)}.svg`;
+    downloadFile(currentSvgNormal, filename, 'image/svg+xml;charset=utf-8');
+  };
+
+  // ========== C1: LIMPIAR TODO ==========
+
+  /**
+   * Limpia todos los campos y vistas previas
+   */
+  const clearAll = () => {
+    brailleInput.value = '';
+    spanishInput.value = '';
+    currentSvgNormal = null;
+    currentSvgEspejo = null;
+    
+    // Restaurar placeholders
+    showPlaceholder(visualPreview, 'Vista previa de Braille aparecerá aquí.');
+    showPlaceholder(espejoPreview, 'Vista espejo aparecerá aquí.');
+  };
+
+  // ========== FUNCIÓN AUXILIAR: VISTA PREVIA ==========
+
+  /**
+   * Actualiza la vista previa visual de Braille (placeholder por ahora)
+   * @param {string} brailleCodes - Códigos Braille separados por espacios
+   */
+  const updateVisualPreview = (brailleCodes) => {
+    // Por ahora, solo mostrar un mensaje
+    // La implementación completa de círculos Braille se hará después
+    if (brailleCodes) {
+      showPlaceholder(visualPreview, `Códigos Braille: ${brailleCodes.split(' ').length} celdas`);
+    } else {
+      showPlaceholder(visualPreview, 'Vista previa de Braille aparecerá aquí.');
+    }
+  };
+
+  // ========== EVENT LISTENERS ==========
+
+  btnToBraille.addEventListener('click', transcribeTextToBraille);
+  btnDownloadSVG.addEventListener('click', downloadSVGNormal);
+  btnClear.addEventListener('click', clearAll);
+
+  // Placeholders iniciales
+  showPlaceholder(visualPreview, 'Vista previa de Braille aparecerá aquí.');
+  showPlaceholder(espejoPreview, 'Vista espejo aparecerá aquí.');
+
+  // Deshabilitar botón PNG temporalmente (no implementado)
+  btnDownloadPNG.disabled = true;
+  btnDownloadPNG.style.opacity = '0.5';
+  btnDownloadPNG.style.cursor = 'not-allowed';
+  btnDownloadPNG.title = 'Función no disponible';
+
+  console.log('✅ TactiLink cargado correctamente');
+});
