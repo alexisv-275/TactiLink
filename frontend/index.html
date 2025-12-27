@@ -302,25 +302,16 @@
         // Mostrar códigos Braille en el textarea
         brailleInput.value = data.braille_codes || 'No se pudo generar código.';
         
-        // Actualizar vista previa visual (placeholder por ahora)
-        updateVisualPreview(data.braille_codes);
+        // Generar SVG automáticamente para vista previa
+        await generateSVGPreview(text);
       }
     };
 
-    // ========== A2: DESCARGA DE SVG NORMAL ==========
-
     /**
-     * Genera y descarga la señalética SVG normal
+     * Genera el SVG y lo muestra en la vista previa (sin descargar)
+     * @param {string} text - Texto para generar el SVG
      */
-    const downloadSVGNormal = async () => {
-      const text = spanishInput.value.trim();
-      
-      if (!text) {
-        alert('Por favor, ingresa texto en español para generar el SVG.');
-        return;
-      }
-
-      // Mostrar estado de carga
+    const generateSVGPreview = async (text) => {
       showPlaceholder(visualPreview, 'Generando SVG...');
 
       const response = await fetchAPI('/api/generar_senaletica', { text });
@@ -338,10 +329,37 @@
 
       // Mostrar SVG en la vista previa
       visualPreview.innerHTML = svgText;
+    };
 
-      // Descargar archivo
+    // ========== A2: DESCARGA DE SVG NORMAL ==========
+
+    /**
+     * Descarga el SVG de la señalética normal
+     * Si ya existe un SVG generado, lo descarga directamente
+     * Si no, genera uno nuevo
+     */
+    const downloadSVGNormal = async () => {
+      const text = spanishInput.value.trim();
+      
+      if (!text) {
+        alert('Por favor, ingresa texto en español para generar el SVG.');
+        return;
+      }
+
+      // Si no hay SVG generado, generarlo primero
+      if (!currentSvgNormal) {
+        await generateSVGPreview(text);
+      }
+
+      // Si después de intentar generar sigue sin SVG, salir
+      if (!currentSvgNormal) {
+        alert('No se pudo generar el SVG.');
+        return;
+      }
+
+      // Descargar el SVG
       const filename = `senaletica_braille_${cleanFilename(text)}.svg`;
-      downloadFile(svgText, filename, 'image/svg+xml;charset=utf-8');
+      downloadFile(currentSvgNormal, filename, 'image/svg+xml;charset=utf-8');
     };
 
     // ========== C1: LIMPIAR TODO ==========
