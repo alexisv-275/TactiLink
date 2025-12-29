@@ -95,7 +95,7 @@ def generar_celda_braille_svg(codigo_braille: str, x: float, y: float) -> str:
     # Mapeo de códigos especiales a sus representaciones numéricas
     codigos_especiales = {
         '#': '3456',  # Prefijo numérico
-        '6': '6',     # Prefijo de mayúscula (punto 6)
+        '46': '46',   # Prefijo de mayúscula (puntos 4 y 6)
     }
     
     # Convertir códigos especiales a sus dígitos correspondientes
@@ -167,9 +167,9 @@ def transcribir_character(character: str, anterior_es_numero: bool = False,
         if anterior_es_numero or siguiente_es_numero:
             return [BRAILLE_MAP.get(char_lower, char_lower)]
     
-    # Manejar mayúsculas: agregar prefijo '6' antes de la letra
+    # Manejar mayúsculas: agregar prefijo '46' antes de la letra
     if character.isalpha() and character.isupper():
-        return ['6', BRAILLE_MAP.get(char_lower, char_lower)]
+        return ['46', BRAILLE_MAP.get(char_lower, char_lower)]
     
     # Caracteres normales
     return [BRAILLE_MAP.get(char_lower, char_lower)]
