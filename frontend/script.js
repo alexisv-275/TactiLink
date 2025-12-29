@@ -136,6 +136,45 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
+  // ========== A1.5: TRANSCRIPCIÓN INVERSA BRAILLE → ESPAÑOL ==========
+
+  /**
+   * Transcribe código Braille numérico a texto español
+   */
+  const transcribeBrailleToSpanish = async () => {
+    const brailleCodes = brailleInput.value.trim();
+    
+    if (!brailleCodes) {
+      alert('Por favor, ingresa códigos Braille para traducir.');
+      return;
+    }
+
+    // Mostrar estado de carga
+    spanishInput.value = 'Traduciendo...';
+
+    const response = await fetchAPI('/api/reverse-transcribe', { braille_codes: brailleCodes });
+    
+    if (!response) {
+      spanishInput.value = '';
+      return;
+    }
+
+    const data = await response.json();
+    
+    if (data.error) {
+      spanishInput.value = '';
+      alert(`Error de API: ${data.error}`);
+    } else {
+      // Mostrar texto en español resultante
+      spanishInput.value = data.spanish_text || 'No se pudo traducir.';
+      
+      // Generar SVG automáticamente para vista previa del texto traducido
+      if (data.spanish_text) {
+        await generateSVGPreview(data.spanish_text);
+      }
+    }
+  };
+
   /**
    * Genera el SVG y lo muestra en la vista previa (sin descargar)
    * @param {string} text - Texto para generar el SVG
@@ -226,6 +265,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // ========== EVENT LISTENERS ==========
 
   btnToBraille.addEventListener('click', transcribeTextToBraille);
+  btnToSpanish.addEventListener('click', transcribeBrailleToSpanish);
   btnDownloadSVG.addEventListener('click', downloadSVGNormal);
   btnClear.addEventListener('click', clearAll);
 
