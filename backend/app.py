@@ -59,6 +59,20 @@ BRAILLE_MAP = {
     # Espacio
     ' ': ' '
 }
+
+# Diccionario inverso para transcripción Braille → Texto
+# Se construye una vez al iniciar el módulo para eficiencia
+REVERSE_BRAILLE_MAP = {
+    v: k for k, v in BRAILLE_MAP.items() 
+    if k not in ['#', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] and v not in ['#', ' ']
+}
+
+# Diccionario específico para números (después del prefijo #)
+REVERSE_NUMBER_MAP = {
+    '1': '1', '12': '2', '14': '3', '145': '4', '15': '5',
+    '124': '6', '1245': '7', '125': '8', '24': '9', '245': '0'
+}
+
 # Códigos especiales que requieren secuencias
 
 
@@ -197,6 +211,90 @@ def transcribir_texto_completo(texto: str) -> str:
     return ' '.join(resultado_braille)
 
 
+def reverse_transcribe(braille_codes_str: str) -> str:
+    """Transcribe código Braille numérico a texto español.
+
+    Procesa una secuencia de códigos Braille y los convierte a texto,
+    manejando prefijos especiales para mayúsculas (#46) y números (#).
+
+    Args:
+        braille_codes_str (str): Códigos Braille separados por espacios.
+            Ejemplo: "46 125 135 123 1" o "# 12 14"
+
+    Returns:
+        str: Texto en español resultante de la transcripción inversa.
+
+    Examples:
+        >>> reverse_transcribe("125 135 123 1")
+        'hola'
+        
+        >>> reverse_transcribe("46 125 135 123 1")
+        'Hola'
+        
+        >>> reverse_transcribe("# 12 14")
+        '23'
+        
+        >>> reverse_transcribe("46 125 135 123 1 2 134 136 1345 145 135 3")
+        'Hola, mundo.'
+    """
+    codes = braille_codes_str.strip().split()
+    resultado = []
+    i = 0
+    modo_numerico = False
+    
+    while i < len(codes):
+        code = codes[i]
+        
+        # Detectar prefijo de mayúscula '46'
+        if code == '46' and i + 1 < len(codes):
+            next_code = codes[i + 1]
+            char = REVERSE_BRAILLE_MAP.get(next_code, '?')
+            if char != '?':
+                resultado.append(char.upper())
+            else:
+                resultado.append('?')
+            i += 2
+            continue
+        
+        # Detectar prefijo numérico '#'
+        if code == '#':
+            modo_numerico = True
+            i += 1
+            continue
+        
+        # Si estamos en modo numérico
+        if modo_numerico:
+            # Verificar si el código es un número
+            numero = REVERSE_NUMBER_MAP.get(code, None)
+            if numero:
+                resultado.append(numero)
+                i += 1
+                continue
+            # Si no es número ni signo numérico, salir del modo numérico
+            elif code not in ['2', '3']:  # coma y punto en contexto numérico
+                modo_numerico = False
+                # Procesar como carácter normal (caer al siguiente bloque)
+            else:
+                # Es un signo de puntuación en contexto numérico
+                char = REVERSE_BRAILLE_MAP.get(code, '?')
+                resultado.append(char)
+                i += 1
+                continue
+        
+        # Espacio
+        if code == ' ':
+            resultado.append(' ')
+            i += 1
+            continue
+        
+        # Carácter normal (letra o signo)
+        char = REVERSE_BRAILLE_MAP.get(code, '?')
+        resultado.append(char)
+        i += 1
+    
+    return ''.join(resultado)
+
+
 
 @app.route('/api/transcribe', methods=['POST'])
 def transcribe_text():
@@ -276,6 +374,85 @@ def transcribe_text():
         "braille_codes": braille_output
     })
 
+
+
+@app.route('/api/reverse-transcribe', methods=['POST'])
+def reverse_transcribe_text():
+    """Endpoint para transcripción inversa de Braille a texto español (RG-3).
+
+    Recibe un JSON con códigos Braille numéricos y devuelve el texto en español
+    correspondiente. Soporta mayúsculas (prefijo 46), números (prefijo #),
+    y todos los caracteres del BRAILLE_MAP.
+
+    Request JSON:
+        braille_codes (str): Códigos Braille separados por espacios.
+            Ejemplo: "125 135 123 1" o "46 125 135 123 1"
+
+    Returns:
+        tuple: JSON response con los siguientes campos:
+            - input (str): Códigos Braille originales recibidos.
+            - spanish_text (str): Texto en español resultante.
+        
+        Status code: 200 si es exitoso, 400 si no se proporcionan códigos.
+
+    Raises:
+        400: Si no se proporciona el campo 'braille_codes' en el JSON.
+
+    Examples:
+        Request (texto simple):
+            >>> {
+            ...     "braille_codes": "125 135 123 1"
+            ... }
+
+        Response:
+            >>> {
+            ...     "input": "125 135 123 1",
+            ...     "spanish_text": "hola"
+            ... }
+
+        Request (con mayúscula):
+            >>> {
+            ...     "braille_codes": "46 125 135 123 1"
+            ... }
+
+        Response:
+            >>> {
+            ...     "input": "46 125 135 123 1",
+            ...     "spanish_text": "Hola"
+            ... }
+
+        Request (con números):
+            >>> {
+            ...     "braille_codes": "# 12 14"
+            ... }
+
+        Response:
+            >>> {
+            ...     "input": "# 12 14",
+            ...     "spanish_text": "23"
+            ... }
+
+        Request (texto completo):
+            >>> {
+            ...     "braille_codes": "46 125 135 123 1 2 134 136 1345 145 135 3"
+            ... }
+
+        Response:
+            >>> {
+            ...     "input": "46 125 135 123 1 2 134 136 1345 145 135 3",
+            ...     "spanish_text": "Hola, mundo."
+            ... }
+    """
+    if not request.json or 'braille_codes' not in request.json:
+        return jsonify({"error": "No se proporcionaron códigos Braille de entrada."}), 400
+    
+    braille_codes = request.json['braille_codes']
+    spanish_output = reverse_transcribe(braille_codes)
+    
+    return jsonify({
+        "input": braille_codes,
+        "spanish_text": spanish_output
+    })
 
 
 @app.route('/api/generar_senaletica', methods=['POST'])
