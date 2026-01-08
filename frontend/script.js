@@ -12,14 +12,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const btnToBraille = document.getElementById('btn-to-braille');
   const btnClear = document.getElementById('btn-clear');
   const btnDownloadSVG = document.getElementById('btn-download-svg');
-  const btnDownloadPNG = document.getElementById('btn-download-png');
   const btnGenerateEspejo = document.getElementById('btn-generate-espejo');
+  const btnDownloadEspejo = document.getElementById('btn-download-espejo');
   const visualPreview = document.getElementById('visual-preview');
   const espejoPreview = document.getElementById('espejo-preview');
 
   // Variables globales para almacenar SVGs
   let currentSvgNormal = null;
   let currentSvgEspejo = null;
+  let debounceTimer = null;
+  let debounceTimerBraille = null;
 
   // ========== FUNCIONES AUXILIARES ==========
 
@@ -105,13 +107,22 @@ document.addEventListener("DOMContentLoaded", () => {
     const text = spanishInput.value.trim();
     
     if (!text) {
-      alert('Por favor, ingresa texto en español para transcribir.');
+      // Si no hay texto, limpiar todo
+      brailleInput.value = '';
+      currentSvgNormal = null;
+      currentSvgEspejo = null;
+      showPlaceholder(visualPreview, 'Vista previa de Braille aparecerá aquí.');
+      showPlaceholder(espejoPreview, 'Vista espejo aparecerá aquí.');
       return;
     }
 
     // Mostrar estado de carga
     brailleInput.value = 'Transcribiendo...';
     showPlaceholder(visualPreview, 'Generando vista previa...');
+    
+    // Limpiar el espejo anterior
+    currentSvgEspejo = null;
+    showPlaceholder(espejoPreview, 'Vista espejo aparecerá aquí.');
 
     const response = await fetchAPI('/api/transcribe', { text });
     
@@ -136,6 +147,19 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
+  /**
+   * Transcribe automáticamente en tiempo real con debounce
+   */
+  const autoTranscribe = () => {
+    // Limpiar el timer anterior
+    clearTimeout(debounceTimer);
+    
+    // Establecer un nuevo timer para ejecutar después de 500ms sin cambios
+    debounceTimer = setTimeout(() => {
+      transcribeTextToBraille();
+    }, 500);
+  };
+
   // ========== A1.5: TRANSCRIPCIÓN INVERSA BRAILLE → ESPAÑOL ==========
 
   /**
@@ -145,12 +169,21 @@ document.addEventListener("DOMContentLoaded", () => {
     const brailleCodes = brailleInput.value.trim();
     
     if (!brailleCodes) {
-      alert('Por favor, ingresa códigos Braille para traducir.');
+      // Si no hay texto, limpiar todo
+      spanishInput.value = '';
+      currentSvgNormal = null;
+      currentSvgEspejo = null;
+      showPlaceholder(visualPreview, 'Vista previa de Braille aparecerá aquí.');
+      showPlaceholder(espejoPreview, 'Vista espejo aparecerá aquí.');
       return;
     }
 
     // Mostrar estado de carga
     spanishInput.value = 'Traduciendo...';
+    
+    // Limpiar el espejo anterior
+    currentSvgEspejo = null;
+    showPlaceholder(espejoPreview, 'Vista espejo aparecerá aquí.');
 
     const response = await fetchAPI('/api/reverse-transcribe', { braille_codes: brailleCodes });
     
@@ -176,6 +209,19 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   /**
+   * Transcribe automáticamente Braille a Español en tiempo real con debounce
+   */
+  const autoTranscribeBraille = () => {
+    // Limpiar el timer anterior
+    clearTimeout(debounceTimerBraille);
+    
+    // Establecer un nuevo timer para ejecutar después de 500ms sin cambios
+    debounceTimerBraille = setTimeout(() => {
+      transcribeBrailleToSpanish();
+    }, 500);
+  };
+
+  /**
    * Genera el SVG y lo muestra en la vista previa (sin descargar)
    * @param {string} text - Texto para generar el SVG
    */
@@ -197,6 +243,39 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Mostrar SVG en la vista previa
     visualPreview.innerHTML = svgText;
+  };
+
+  /**
+   * Genera el SVG en espejo y lo muestra en la vista previa
+   * @param {string} text - Texto para generar el SVG espejo
+   */
+  const generateSVGEspejo = async (text) => {
+    if (!text) {
+      text = spanishInput.value.trim();
+    }
+
+    if (!text) {
+      alert('Por favor, ingresa texto en español para generar el espejo.');
+      return;
+    }
+
+    showPlaceholder(espejoPreview, 'Generando SVG espejo...');
+
+    const response = await fetchAPI('/api/generar_senaletica_espejo', { text });
+    
+    if (!response) {
+      showPlaceholder(espejoPreview, 'Error al generar SVG espejo.');
+      return;
+    }
+
+    // El endpoint devuelve SVG como texto
+    const svgText = await response.text();
+    
+    // Guardar SVG espejo para uso posterior
+    currentSvgEspejo = svgText;
+
+    // Mostrar SVG en la vista previa de espejo
+    espejoPreview.innerHTML = svgText;
   };
 
   // ========== A2: DESCARGA DE SVG NORMAL ==========
@@ -228,6 +307,37 @@ document.addEventListener("DOMContentLoaded", () => {
     // Descargar el SVG
     const filename = `senaletica_braille_${cleanFilename(text)}.svg`;
     downloadFile(currentSvgNormal, filename, 'image/svg+xml;charset=utf-8');
+  };
+
+  // ========== A3: DESCARGA DE SVG ESPEJO ==========
+
+  /**
+   * Descarga el SVG de la señalética en espejo
+   * Si ya existe un SVG espejo generado, lo descarga directamente
+   * Si no, genera uno nuevo
+   */
+  const downloadSVGEspejo = async () => {
+    const text = spanishInput.value.trim();
+    
+    if (!text) {
+      alert('Por favor, ingresa texto en español para generar el SVG espejo.');
+      return;
+    }
+
+    // Si no hay SVG espejo generado, generarlo primero
+    if (!currentSvgEspejo) {
+      await generateSVGEspejo(text);
+    }
+
+    // Si después de intentar generar sigue sin SVG, salir
+    if (!currentSvgEspejo) {
+      alert('No se pudo generar el SVG espejo.');
+      return;
+    }
+
+    // Descargar el SVG espejo
+    const filename = `senaletica_braille_espejo_${cleanFilename(text)}.svg`;
+    downloadFile(currentSvgEspejo, filename, 'image/svg+xml;charset=utf-8');
   };
 
   // ========== C1: LIMPIAR TODO ==========
@@ -264,20 +374,43 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ========== EVENT LISTENERS ==========
 
+  // Traducción automática en tiempo real al escribir en español
+  spanishInput.addEventListener('input', autoTranscribe);
+
+  // Traducción automática en tiempo real al escribir en Braille
+  brailleInput.addEventListener('input', autoTranscribeBraille);
+
+  // Animación de botones según el campo activo
+  spanishInput.addEventListener('focus', () => {
+    btnToBraille.classList.add('animate-pulse-translate');
+    btnToSpanish.classList.remove('animate-pulse-translate');
+  });
+
+  brailleInput.addEventListener('focus', () => {
+    btnToSpanish.classList.add('animate-pulse-translate');
+    btnToBraille.classList.remove('animate-pulse-translate');
+  });
+
+  // Estado inicial: animar el botón de traducir a Braille
+  btnToBraille.classList.add('animate-pulse-translate');
+
   btnToBraille.addEventListener('click', transcribeTextToBraille);
   btnToSpanish.addEventListener('click', transcribeBrailleToSpanish);
   btnDownloadSVG.addEventListener('click', downloadSVGNormal);
+  btnGenerateEspejo.addEventListener('click', async () => {
+    const text = spanishInput.value.trim();
+    if (text) {
+      await generateSVGEspejo(text);
+    } else {
+      alert('Por favor, ingresa texto en español primero.');
+    }
+  });
+  btnDownloadEspejo.addEventListener('click', downloadSVGEspejo);
   btnClear.addEventListener('click', clearAll);
 
   // Placeholders iniciales
   showPlaceholder(visualPreview, 'Vista previa de Braille aparecerá aquí.');
   showPlaceholder(espejoPreview, 'Vista espejo aparecerá aquí.');
-
-  // Deshabilitar botón PNG temporalmente (no implementado)
-  btnDownloadPNG.disabled = true;
-  btnDownloadPNG.style.opacity = '0.5';
-  btnDownloadPNG.style.cursor = 'not-allowed';
-  btnDownloadPNG.title = 'Función no disponible';
 
   console.log('✅ TactiLink cargado correctamente');
 });

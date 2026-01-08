@@ -513,11 +513,10 @@ def generar_senaletica():
     cell_width = 25
     cell_height = 35
     margin = 20
-    text_height = 30
     
-    # Calcular dimensiones totales del SVG
+    # Calcular dimensiones totales del SVG (sin espacio para texto)
     total_width = len(codes_list) * cell_width + 2 * margin
-    total_height = cell_height + text_height + 2 * margin
+    total_height = cell_height + 2 * margin
     
     # Iniciar el SVG
     svg_parts = [
@@ -525,16 +524,13 @@ def generar_senaletica():
         f'    <!-- Fondo -->',
         f'    <rect width="{total_width}" height="{total_height}" fill="#ffffff" stroke="#cccccc" stroke-width="1"/>',
         f'    ',
-        f'    <!-- Texto en tinta -->',
-        f'    <text x="{total_width/2}" y="{margin + 15}" font-family="Arial, sans-serif" font-size="18" font-weight="bold" text-anchor="middle" fill="#000">{text}</text>',
-        f'    ',
         f'    <!-- Representación Braille -->'
     ]
     
     # Generar cada celda Braille
     for i, code in enumerate(codes_list):
         cell_x = margin + i * cell_width + 5
-        cell_y = margin + text_height + 5
+        cell_y = margin + 5
         
         # Generar la celda Braille
         braille_cell = generar_celda_braille_svg(code, cell_x, cell_y)
@@ -546,6 +542,86 @@ def generar_senaletica():
     svg_output = '\n'.join(svg_parts)
     
     return app.response_class(response=svg_output, status=200, mimetype='image/svg+xml')
+
+@app.route('/api/generar_senaletica_espejo', methods=['POST'])
+def generar_senaletica_espejo():
+    """Endpoint para generación de señalética Braille en formato SVG ESPEJO (invertido).
+
+    Recibe un JSON con el campo 'text' y devuelve una representación
+    visual SVG en espejo (invertida horizontalmente) de la señalética Braille.
+    Este formato es útil para impresión en relieve, donde se necesita la versión
+    espejo para que al imprimirse quede correcta al tacto.
+    
+    El SVG generado incluye:
+    - Representación visual INVERTIDA de celdas Braille con puntos activos e inactivos
+    - Texto en tinta (texto original) invertido encima de la representación Braille
+    - Formato vectorial escalable sin pérdida de calidad
+    - Transform: scaleX(-1) para invertir horizontalmente
+
+    Request JSON:
+        text (str): Texto a convertir en señalética espejo. Soporta letras, números,
+            mayúsculas y signos básicos.
+
+    Returns:
+        flask.Response: Documento SVG con la representación visual en espejo de la 
+            señalética Braille. Content-Type: image/svg+xml.
+
+    Examples:
+        Request:
+            >>> {
+            ...     "text": "Hola"
+            ... }
+
+        Response (SVG):
+            SVG con representación Braille invertida de "Hola"
+            con transform="scale(-1, 1)" aplicado
+    """
+    if not request.json or 'text' not in request.json:
+        return jsonify({"error": "No se proporcionó texto de entrada."}), 400
+    
+    text = request.json['text']
+    
+    # Transcribir el texto a códigos Braille
+    braille_codes = transcribir_texto_completo(text)
+    codes_list = braille_codes.split()
+    
+    # Dimensiones de la señalética
+    cell_width = 25
+    cell_height = 35
+    margin = 20
+    
+    # Calcular dimensiones totales del SVG (sin espacio para texto)
+    total_width = len(codes_list) * cell_width + 2 * margin
+    total_height = cell_height + 2 * margin
+    
+    # Iniciar el SVG con transformación de espejo
+    svg_parts = [
+        f'<svg width="{total_width}" height="{total_height}" viewBox="0 0 {total_width} {total_height}" xmlns="http://www.w3.org/2000/svg">',
+        f'    <!-- Grupo principal con transformación de espejo -->',
+        f'    <g transform="scale(-1, 1) translate(-{total_width}, 0)">',
+        f'        <!-- Fondo -->',
+        f'        <rect width="{total_width}" height="{total_height}" fill="#ffffff" stroke="#cccccc" stroke-width="1"/>',
+        f'        ',
+        f'        <!-- Representación Braille (invertida) -->'
+    ]
+    
+    # Generar cada celda Braille
+    for i, code in enumerate(codes_list):
+        cell_x = margin + i * cell_width + 5
+        cell_y = margin + 5
+        
+        # Generar la celda Braille
+        braille_cell = generar_celda_braille_svg(code, cell_x, cell_y)
+        svg_parts.append(f'        <!-- Celda {i+1}: código {code} -->')
+        svg_parts.append(f'        {braille_cell}')
+    
+    svg_parts.append('    </g>')
+    svg_parts.append('</svg>')
+    
+    svg_output = '\n'.join(svg_parts)
+    
+    return app.response_class(response=svg_output, status=200, mimetype='image/svg+xml')
+
 
 @app.route('/health', methods=['GET'])
 def health():
