@@ -8,8 +8,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // ========== ELEMENTOS DEL DOM ==========
   const brailleInput = document.getElementById('braille-input');
   const spanishInput = document.getElementById('spanish-input');
-  const btnToSpanish = document.getElementById('btn-to-spanish');
-  const btnToBraille = document.getElementById('btn-to-braille');
   const btnClear = document.getElementById('btn-clear');
   const btnDownloadSVG = document.getElementById('btn-download-svg');
   const btnGenerateEspejo = document.getElementById('btn-generate-espejo');
@@ -380,22 +378,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // Traducción automática en tiempo real al escribir en Braille
   brailleInput.addEventListener('input', autoTranscribeBraille);
 
-  // Animación de botones según el campo activo
-  spanishInput.addEventListener('focus', () => {
-    btnToBraille.classList.add('animate-pulse-translate');
-    btnToSpanish.classList.remove('animate-pulse-translate');
-  });
-
-  brailleInput.addEventListener('focus', () => {
-    btnToSpanish.classList.add('animate-pulse-translate');
-    btnToBraille.classList.remove('animate-pulse-translate');
-  });
-
-  // Estado inicial: animar el botón de traducir a Braille
-  btnToBraille.classList.add('animate-pulse-translate');
-
-  btnToBraille.addEventListener('click', transcribeTextToBraille);
-  btnToSpanish.addEventListener('click', transcribeBrailleToSpanish);
   btnDownloadSVG.addEventListener('click', downloadSVGNormal);
   btnGenerateEspejo.addEventListener('click', async () => {
     const text = spanishInput.value.trim();
