@@ -57,15 +57,17 @@ BRAILLE_MAP = {
     '-': '36',    
     
     # Espacio
-    ' ': ' '
+    ' ': '0'  # Cambiar de ' ' a '0' como marcador de espacio
 }
 
 # Diccionario inverso para transcripción Braille → Texto
-# Se construye una vez al iniciar el módulo para eficiencia
 REVERSE_BRAILLE_MAP = {
     v: k for k, v in BRAILLE_MAP.items() 
-    if k not in ['#', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] and v not in ['#', ' ']
+    if k not in ['#', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'] and v not in ['#']
 }
+
+# Agregar el espacio manualmente al diccionario inverso
+REVERSE_BRAILLE_MAP['0'] = ' '
 
 # Diccionario específico para números (después del prefijo #)
 REVERSE_NUMBER_MAP = {
@@ -213,7 +215,7 @@ def transcribir_texto_completo(texto: str) -> str:
 
 def reverse_transcribe(braille_codes_str: str) -> str:
     """Transcribe código Braille numérico a texto español.
-
+    
     Procesa una secuencia de códigos Braille y los convierte a texto,
     manejando prefijos especiales para mayúsculas (#46) y números (#).
 
@@ -254,7 +256,7 @@ def reverse_transcribe(braille_codes_str: str) -> str:
             else:
                 resultado.append('?')
             i += 2
-            continue
+            continue 
         
         # Detectar prefijo numérico '#'
         if code == '#':
@@ -281,8 +283,8 @@ def reverse_transcribe(braille_codes_str: str) -> str:
                 i += 1
                 continue
         
-        # Espacio
-        if code == ' ':
+        # Espacio (debe ser antes de carácter normal)
+        if code == '0':
             resultado.append(' ')
             i += 1
             continue
