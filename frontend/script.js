@@ -181,7 +181,7 @@ const transcribeBrailleToSpanish = async () => {
     showPlaceholder(espejoPreview, 'Vista espejo aparecerá aquí.');
 
     // 1. URL correcta con guion bajo y enviando 'braille_codes'
-    const response = await fetchAPI('http://localhost:5000/api/reverse-transcribe', { braille_codes: brailleCodes });
+    const response = await fetchAPI('/api/reverse-transcribe', { braille_codes: brailleCodes });
     
     if (!response) {
       spanishInput.value = '';

@@ -30,8 +30,17 @@ BRAILLE_MAP = {
     '?': '26',     # En español Braille, abrir y cerrar pregunta es igual
     '¡': '235',    # Corregido: puntos 2, 3 y 5
     '!': '235',    # En español Braille, abrir y cerrar admiración es igual
+    '"': '236',   # Comillas dobles
+    '_': '36',    # Guion bajo
+    '÷': '256',   # Signo de división
     '.': '3', ',': '2', ';': '23', ':': '25', '-': '36',
     '(': '126', ')': '345', '+': '235', ' ': ' '
+}
+
+# Mapeo específico para números (puntos de la 'a' a la 'j')
+NUM_BRAILLE_MAP = {
+    '1': '1', '2': '12', '3': '14', '4': '145', '5': '15',
+    '6': '124', '7': '1245', '8': '125', '9': '24', '0': '245'
 }
 
 # 2. GENERACIÓN DE MAPAS INVERSOS CON PRIORIDAD (Evita colisión ú/¡)
@@ -79,65 +88,89 @@ def generar_celda_braille_svg(codigo_braille: str, x: float, y: float) -> str:
 # --- LÓGICA DE TRADUCCIÓN ---
 
 def transcribir_texto_completo(texto: str) -> str:
-    """Español -> Braille"""
+    """Español -> Braille con puntos correctos para números."""
     resultado = []
     modo_numerico = False
-    for i, char in enumerate(texto):
-        es_mayus = char.isupper()
+    
+    for char in texto:
         c = char.lower()
         
-        if es_numero(c):
+        if c.isdigit():
             if not modo_numerico:
-                resultado.append('#')
+                resultado.append('3456') # Signo de número
                 modo_numerico = True
-            resultado.append(BRAILLE_MAP.get(c, c))
+            # IMPORTANTE: Usamos NUM_BRAILLE_MAP para obtener los PUNTOS, no el dígito
+            resultado.append(NUM_BRAILLE_MAP.get(c, ''))
+        
         elif c == ' ':
             resultado.append(' ')
             modo_numerico = False
+            
         else:
             modo_numerico = False
-            if es_mayus:
-                resultado.append('46')  # Indicador de mayúscula
+            if char.isupper():
+                resultado.append('46') # Signo de mayúscula
             resultado.append(BRAILLE_MAP.get(c, c))
-    return ' '.join(resultado)
+
+    # Unión final con espacios entre celdas
+    return " ".join(resultado)
 
 def reverse_transcribe(braille_codes_str: str) -> str:
-    """Braille -> Español (Corregido para tildes y mayúsculas)"""
+    """Braille -> Español: Diferencia entre letras y números tras el signo #."""
+    # IMPORTANTE: No eliminamos los elementos vacíos aquí
     raw_codes = braille_codes_str.strip().split(' ')
-    codes = [c if c != '' else ' ' for c in raw_codes]
     resultado = []
     i = 0
     modo_numerico = False
     
-    while i < len(codes):
-        code = codes[i]
-        if code == ' ':
+    REVERSE_NUM_MAP = {v: k for k, v in NUM_BRAILLE_MAP.items()}
+    REVERSE_LETRA_MAP = REVERSE_BRAILLE_MAP 
+
+    while i < len(raw_codes):
+        code = raw_codes[i]
+        
+        # 1. SI EL CÓDIGO ESTÁ VACÍO: Significa que hay un espacio (o doble espacio en la entrada)
+        if code == '':
             resultado.append(' ')
-            modo_numerico = False
+            modo_numerico = False # El espacio rompe el modo numérico
             i += 1
             continue
-        if code == '46' and i + 1 < len(codes): # Mayúscula
-            char = REVERSE_BRAILLE_MAP.get(codes[i+1], '?')
-            resultado.append(char.upper())
-            i += 2
-            continue
-        if code == '#' or code == '3456': # Número
+
+        # 2. Detectar signo de número
+        if code == '3456':
             modo_numerico = True
             i += 1
             continue
+            
+        # 3. Traducir según el modo activo
         if modo_numerico:
-            num = REVERSE_NUMBER_MAP.get(code)
+            num = REVERSE_NUM_MAP.get(code)
             if num:
                 resultado.append(num)
-                i += 1
+            else:
+                modo_numerico = False
+                resultado.append(REVERSE_LETRA_MAP.get(code, '?'))
+        else:
+            # Manejo de mayúsculas (Prefijo 46)
+            if code == '46' and i + 1 < len(raw_codes):
+                siguiente_codigo = raw_codes[i+1]
+                # Si lo que sigue es un espacio, solo ignoramos el prefijo o ponemos error
+                if siguiente_codigo == '':
+                    resultado.append(' ')
+                    i += 1
+                else:
+                    letra = REVERSE_LETRA_MAP.get(siguiente_codigo, '?')
+                    resultado.append(letra.upper())
+                    i += 2
                 continue
-            modo_numerico = False
+            
+            # Traducción normal de letras y símbolos
+            resultado.append(REVERSE_LETRA_MAP.get(code, '?'))
         
-        char = REVERSE_BRAILLE_MAP.get(code, '?')
-        resultado.append(char)
         i += 1
-    return ''.join(resultado)
-
+        
+    # Limpiamos espacios dobles accidentales al final y unimos
+    return ''.join(resultado).replace('  ', ' ')
 # --- ENDPOINTS API ---
 
 @app.route('/api/transcribe', methods=['POST'])
