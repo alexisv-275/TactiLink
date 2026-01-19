@@ -31,7 +31,7 @@ BRAILLE_MAP = {
     '¡': '235',    # Corregido: puntos 2, 3 y 5
     '!': '235',    # En español Braille, abrir y cerrar admiración es igual
     '.': '3', ',': '2', ';': '23', ':': '25', '-': '36',
-    '(': '126', ')': '345', '+': '235', 'x': '236', ' ': ' '
+    '(': '126', ')': '345', '+': '235', ' ': ' '
 }
 
 # 2. GENERACIÓN DE MAPAS INVERSOS CON PRIORIDAD (Evita colisión ú/¡)
