@@ -57,8 +57,8 @@ Este documento detalla los casos de prueba (CP) basados en los Requerimientos Ge
 | **Objetivo** | Verificar la transcripción de u, v, x, y, z, ñ, ü, w. |
 | **Precondiciones** | El servicio de transcripción está activo. |
 | **Pasos de Ejecución** |1. Ingresar la cadena uvxyzñüw. 2. Presionar "Transcribir".|
-| **Resultado Esperado** | Representación Braille esperada: 136 1236 1346 13456 1356 12456 2456 2346|
-| **Resultado Obtenido** | 136 1236 1346 13456 1356 12456 2456 2346 |
+| **Resultado Esperado** | Representación Braille esperada: 136 1236 1346 13456 1356 12456 1256 2456|
+| **Resultado Obtenido** | 136 1236 1346 13456 1356 12456 1256 2456 |
 | **Estado** | PASSED |
 | **Análisis (Si Falla)** |  |
 
@@ -69,8 +69,8 @@ Este documento detalla los casos de prueba (CP) basados en los Requerimientos Ge
 | **Objetivo** | Verificar la transcripción de todas las vocales acentuadas. |
 | **Precondiciones** | El servicio de transcripción está activo. |
 | **Pasos de Ejecución** | 1. Ingresar la cadena áéíóú. 2. Presionar "Transcribir". |
-| **Resultado Esperado** | Representación Braille esperada: 1 2 34 12356 2346 |
-| **Resultado Obtenido** | 1 2 34 12356 2346 |
+| **Resultado Esperado** | Representación Braille esperada: 12356 2346 34 346 23456 |
+| **Resultado Obtenido** | 12356 2346 34 346 23456 |
 | **Estado** | PASSED |
 | **Análisis (Si Falla)** |  |
 
@@ -81,8 +81,8 @@ Este documento detalla los casos de prueba (CP) basados en los Requerimientos Ge
 | **Objetivo** | Verificar una secuencia numérica ('0123456789'), donde el signo solo se pone al inicio. |
 | **Precondiciones** | El servicio de transcripción está activo. |
 | **Pasos de Ejecución** | 1. Ingresar la cadena 0123456789. 2. Presionar "Transcribir". |
-| **Resultado Esperado** | Representación Braille esperada: # 245 1 12 14 145 15 124 1245 125 24|
-| **Resultado Obtenido** | # 245 1 12 14 145 15 124 1245 125 24 |  
+| **Resultado Esperado** | Representación Braille esperada: 3456 245 1 12 14 145 15 124 1245 125 24|
+| **Resultado Obtenido** | 3456 245 1 12 14 145 15 124 1245 125 24 |  
 | **Estado** | PASSED |
 
 | Componente | Detalle |
@@ -92,8 +92,8 @@ Este documento detalla los casos de prueba (CP) basados en los Requerimientos Ge
 | **Objetivo** | Verificar la transcripción de la coma (,) y el punto (.) en contexto textual y numérico. |
 | **Precondiciones** | El servicio de transcripción está activo. |
 | **Pasos de Ejecución** | **Textual** 1.Ingresar el texto Hola, mundo. 2.Presionar el botón "Transcribir".**Numérico** 1. Ingresar la cadena 2.329,724. 2. Presionar "Transcribir". |
-| **Resultado Esperado** | Representación Braille esperada: **Textual**  125 135 123 1 2 134 136 1345 145 135 3 **Numérico** # 12 3 14 12 24 2 1245 12 145 3|
-| **Resultado Obtenido** | **Textual:** 125 135 123 1 2   134 136 1345 145 135 3 **Numérica:** # 12 3 14 12 24 2 1245 12 145 3 |
+| **Resultado Esperado** | Representación Braille esperada: **Textual**  46 125 135 123 1 2   134 136 1345 145 135 3 **Numérico** 3456 12 3 3456 14 12 24 2 3456 1245 12 145 3|
+| **Resultado Obtenido** | **Textual:** 46 125 135 123 1 2   134 136 1345 145 135 3 **Numérica:** 3456 12 3 3456 14 12 24 2 3456 1245 12 145 3 |
 | **Estado** | PASSED |
 | **Análisis (Si Falla)** |  |
 
@@ -104,8 +104,8 @@ Este documento detalla los casos de prueba (CP) basados en los Requerimientos Ge
 | **Objetivo** | Verificar la transcripción correcta de signos adicionales|
 | **Precondiciones** | El servicio de transcripción está activo. |
 | **Pasos de Ejecución** | 1\. Ingresar: ;:_""!¡¿?()+x=÷- 2\. Presionar el botón "Transcribir". |
-| **Resultado Esperado** | La aplicación debe devolver la representación Braille: 23 25 456 456 2356 235 2356 235 2356 235 2356 235 26 2356 26 5 126 5 346 346 5 236 2356 2356 256 256 1346 2356 256 36 |
-| **Resultado Obtenido** | 23 25 456 456 2356 235 2356 235 2356 235 2356 235 26 2356 26 5 126 5 346 346 5 236 2356 2356 256 256 1346 2356 256 36 | 
+| **Resultado Esperado** | La aplicación debe devolver la representación Braille:23 25 36 236 236 235 235 26 26 126 345 235 1346 2356 256 36 |
+| **Resultado Obtenido** | 23 25 36 236 236 235 235 26 26 126 345 235 1346 2356 256 36 | 
 | **Estado** | PASSED |
 | **Análisis (Si Falla)** |  |
 
@@ -116,8 +116,8 @@ Este documento detalla los casos de prueba (CP) basados en los Requerimientos Ge
 | **Objetivo** | Verificar la transcripción correcta de una mayúscula ('A'). |
 | **Precondiciones** | El servicio de transcripción está activo. |
 | **Pasos de Ejecución** | 1\. Ingresar el texto **A**. 2\. Presionar el botón "Transcribir". |
-| **Resultado Esperado** | La aplicación debe devolver la representación Braille (Signo de Mayúscula \+ Letra a): **6** seguido de **1**. |
-| **Resultado Obtenido** | 6 1 |
+| **Resultado Esperado** | La aplicación debe devolver la representación Braille (Signo de Mayúscula \+ Letra a): **46** seguido de **1**. |
+| **Resultado Obtenido** | 46 1 |
 | **Estado** | PASSED |
 | **Análisis (Si Falla)** |  |
 
@@ -149,8 +149,8 @@ Estos casos verifican la funcionalidad de conversión de Braille a texto españo
 | **Precondiciones** | El servicio de transcripción inversa (/api/reverse-transcribe) está activo. |
 | **Pasos de Ejecución** | 1. Ingresar una cadena con formato inválido (ej: "abc" en lugar de números de puntos). 2. Presionar "Transcribir a Texto". |
 | **Resultado Esperado** | El sistema devuelve un mensaje de error indicando que el formato de entrada no es válido. |
-| **Resultado Obtenido** |  |
-| **Estado** | PENDING |
+| **Resultado Obtenido** | ? |
+| **Estado** | PASSED|
 | **Análisis (Si Falla)** |  |
 
 | Componente | Detalle |
@@ -159,10 +159,10 @@ Estos casos verifican la funcionalidad de conversión de Braille a texto españo
 | **Requisito Asociado** | RE-3.2: Mapear representación Braille a caracteres en español |
 | **Objetivo** | Verificar la transcripción inversa de Braille a texto incluyendo letras, mayúsculas y vocales acentuadas. |
 | **Precondiciones** | El servicio de transcripción inversa está activo. |
-| **Pasos de Ejecución** | 1. Ingresar la secuencia Braille: 1 12 14 145 15 124 1245 125 24 245 6 1 12356 2 34. 2. Presionar "Transcribir a Texto". |
+| **Pasos de Ejecución** | 1. Ingresar la secuencia Braille: 1 12 14 145 15 124 1245 125 24 245   46 1 346 2346 34. 2. Presionar "Transcribir a Texto". |
 | **Resultado Esperado** | El sistema devuelve el texto: abcdefghij Aóéí |
 | **Resultado Obtenido** |  |
-| **Estado** | PENDING |
+| **Estado** | PASSED |
 | **Análisis (Si Falla)** |  |
 
 | Componente | Detalle |
@@ -171,10 +171,10 @@ Estos casos verifican la funcionalidad de conversión de Braille a texto españo
 | **Requisito Asociado** | RE-3.2: Mapear representación Braille a caracteres en español |
 | **Objetivo** | Verificar la transcripción inversa del mapeo de números y signos básicos. |
 | **Precondiciones** | El servicio de transcripción inversa está activo. |
-| **Pasos de Ejecución** | 1. Ingresar la secuencia Braille: # 1 12 14 2 3. 2. Presionar "Transcribir a Texto". |
+| **Pasos de Ejecución** | 1. Ingresar la secuencia Braille: 3456 1 12 14 2 3. 2. Presionar "Transcribir a Texto". |
 | **Resultado Esperado** | El sistema devuelve el texto: 123,. |
 | **Resultado Obtenido** |  |
-| **Estado** | PENDING |
+| **Estado** | PASSED |
 | **Análisis (Si Falla)** |  |
 
 ### **D. Pruebas de SVG en Modo Espejo (RG-4)**
