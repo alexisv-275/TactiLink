@@ -163,11 +163,10 @@ document.addEventListener("DOMContentLoaded", () => {
   /**
    * Transcribe código Braille numérico a texto español
    */
-  const transcribeBrailleToSpanish = async () => {
+const transcribeBrailleToSpanish = async () => {
     const brailleCodes = brailleInput.value.trim();
     
     if (!brailleCodes) {
-      // Si no hay texto, limpiar todo
       spanishInput.value = '';
       currentSvgNormal = null;
       currentSvgEspejo = null;
@@ -176,14 +175,13 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // Mostrar estado de carga
     spanishInput.value = 'Traduciendo...';
     
-    // Limpiar el espejo anterior
     currentSvgEspejo = null;
     showPlaceholder(espejoPreview, 'Vista espejo aparecerá aquí.');
 
-    const response = await fetchAPI('/api/reverse-transcribe', { braille_codes: brailleCodes });
+    // 1. URL correcta con guion bajo y enviando 'braille_codes'
+    const response = await fetchAPI('http://localhost:5000/api/reverse-transcribe', { braille_codes: brailleCodes });
     
     if (!response) {
       spanishInput.value = '';
@@ -196,15 +194,14 @@ document.addEventListener("DOMContentLoaded", () => {
       spanishInput.value = '';
       alert(`Error de API: ${data.error}`);
     } else {
-      // Mostrar texto en español resultante
-      spanishInput.value = data.spanish_text || 'No se pudo traducir.';
+      const textoTraducido = data.text || 'No se pudo traducir.';
+      spanishInput.value = textoTraducido;
       
-      // Generar SVG automáticamente para vista previa del texto traducido
-      if (data.spanish_text) {
-        await generateSVGPreview(data.spanish_text);
+      if (data.text) {
+        await generateSVGPreview(textoTraducido);
       }
     }
-  };
+};
 
   /**
    * Transcribe automáticamente Braille a Español en tiempo real con debounce
