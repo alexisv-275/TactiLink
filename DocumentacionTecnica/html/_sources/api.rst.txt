@@ -1,5 +1,24 @@
+..
+   ==========================================
+   REFERENCIA COMPLETA DE LA API
+   ==========================================
+   
+   Este documento genera automáticamente la documentación de todas las
+   funciones y características del código Python de TactiLink.
+   
+   Cómo funciona:
+   - Lee el archivo app.py del proyecto
+   - Extrae los docstrings (comentarios especiales)
+   - Muestra parámetros, tipos y descripciones
+   - Crea links para navegación fácil
+   
+   Este archivo es la "traducción" de código Python a documentación HTML legible.
+
 Referencia de API
 =================
+
+Documentación completa de todas las funciones disponibles en TactiLink.
+Aquí encontrarás qué hace cada función, qué parámetros acepta y qué devuelve.
 
 .. automodule:: app
    :members:

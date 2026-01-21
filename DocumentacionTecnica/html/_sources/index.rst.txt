@@ -3,6 +3,27 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
+.. 
+   ==========================================
+   ÍNDICE PRINCIPAL DE DOCUMENTACIÓN
+   ==========================================
+   
+   Este archivo es la portada principal de toda la documentación técnica.
+   Define la estructura, navegación y contenido general del proyecto TactiLink.
+   
+   Propósito:
+   - Dar bienvenida a usuarios y desarrolladores
+   - Explicar qué es TactiLink en términos simples
+   - Mostrar características principales
+   - Proporcionar ejemplos de uso rápido
+   - Guiar hacia documentación más específica
+   
+   Estructura:
+   - Portada: Título y descripción general
+   - Características: Lo que el sistema puede hacer
+   - Ejemplos: Comandos curl listos para usar
+   - Referencias: Enlaces a otros documentos
+
 Documentación Técnica de TactiLink
 ===================================
 
@@ -18,6 +39,11 @@ TactiLink proporciona una API REST que permite:
 - **Soporte multilingüe**: Maneja caracteres especiales del español (acentos, ñ, etc.)
 - **Contexto numérico**: Detecta y maneja automáticamente secuencias de números
 
+.. note::
+   
+   La API está disponible en ``http://localhost:5000`` cuando el servidor está ejecutándose.
+   Todos los endpoints aceptan JSON y responden en JSON.
+
 Características Principales
 ---------------------------
 
@@ -27,8 +53,14 @@ Características Principales
 ✓ Endpoints de salud para monitoreo
 ✓ CORS habilitado para integración con frontend
 
+
 Contenidos
 ----------
+
+.. 
+   Estructura de la documentación técnica.
+   Cada sección contiene referencias cruzadas a otros documentos.
+   maxdepth: Profundidad de niveles a mostrar en el menú lateral
 
 .. toctree::
    :maxdepth: 2
@@ -43,13 +75,19 @@ Para usar la API:
 
 1. **Transcribir texto a Braille**:
 
+   Convierte palabras en español a códigos Braille numéricos.
+
    .. code-block:: bash
 
       curl -X POST http://localhost:5000/api/transcribe \
         -H "Content-Type: application/json" \
         -d '{"text": "Hola"}'
 
+   Respuesta esperada: Códigos Braille numéricos
+
 2. **Generar señalética SVG**:
+
+   Crea un archivo gráfico que puede imprimirse para lectura táctil.
 
    .. code-block:: bash
 
@@ -57,32 +95,56 @@ Para usar la API:
         -H "Content-Type: application/json" \
         -d '{"text": "Hola"}'
 
+   Respuesta esperada: SVG con puntos táctiles
+
 3. **Verificar salud del servicio**:
+
+   Confirma que el servidor está activo y funcionando.
 
    .. code-block:: bash
 
       curl http://localhost:5000/health
 
+   Respuesta esperada: {"status": "ok"}
+
 Requisitos
 ----------
 
-- Python 3.8+
-- Flask
-- Flask-CORS
-- svgwrite
+Para ejecutar TactiLink necesitas:
+
+- **Python 3.8+**: Lenguaje de programación para la API
+- **Flask**: Framework web que proporciona la API
+- **Flask-CORS**: Permite que el frontend acceda a la API
+- **svgwrite**: Librería para crear archivos gráficos SVG
+
+Todos estos se instalan automáticamente en el siguiente paso.
 
 Instalación
 -----------
 
+Sigue estos pasos para que TactiLink funcione en tu computadora:
+
 .. code-block:: bash
 
+   # Paso 1: Instala todas las librerías necesarias
    pip install -r requirements.txt
+   
+   # Paso 2: Inicia el servidor
    python app.py
+
+Listo. El servidor estará activo en http://localhost:5000
+
+.. warning::
+
+   Asegúrate de estar en el directorio correcto antes de ejecutar estos comandos.
+   Si encuentras errores, revisa que Python 3.8+ esté instalado.
 
 Índice
 ------
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+Accesos rápidos a recursos:
+
+* :ref:`genindex` - Busca cualquier término técnico
+* :ref:`modindex` - Lista de todos los módulos Python
+* :ref:`search` - Busca por palabras clave
 
