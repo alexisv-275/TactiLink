@@ -5,14 +5,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>app &mdash; documentación de Tactilink - 1.0.0</title>
+  <title>app &mdash; documentación de TactiLink - 2.0.0</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=36c4ab74"></script>
+      <script src="../_static/documentation_options.js?v=ea25ecff"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="../_static/translations.js?v=f85f4cfb"></script>
@@ -30,7 +30,7 @@
           
           
           <a href="../index.html" class="icon icon-home">
-            Tactilink
+            TactiLink
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -48,7 +48,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">Tactilink</a>
+          <a href="../index.html">TactiLink</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -70,11 +70,7 @@
 <span></span><span class="sd">&quot;&quot;&quot;Módulo principal de la API TactiLink para transcripción de texto a Braille.</span>
 
 <span class="sd">Este módulo proporciona endpoints REST para convertir texto en español</span>
-<span class="sd">a código Braille numérico y generar representaciones SVG de señalética Braille.</span>
-
-<span class="sd">Attributes:</span>
-<span class="sd">    BRAILLE_MAP (dict): Diccionario de mapeo de caracteres a código Braille numérico.</span>
-<span class="sd">        Cada clave representa un carácter y su valor el código Braille correspondiente.</span>
+<span class="sd">a código Braille numérico y viceversa, cumpliendo con los estándares del proyecto.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">flask</span><span class="w"> </span><span class="kn">import</span> <span class="n">Flask</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">jsonify</span>
@@ -83,9 +79,9 @@
 <span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 <span class="n">CORS</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
 
-<span class="c1"># Mapeo completo de caracteres a código Braille numérico</span>
+<span class="c1"># 1. MAPEO DE CARACTERES (Siguiendo el PDF de la materia)</span>
 <span class="n">BRAILLE_MAP</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="c1"># Letras a-z</span>
+    <span class="c1"># Letras a-z (Sin cambios, son estándar)</span>
     <span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="s1">&#39;12&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">:</span> <span class="s1">&#39;14&#39;</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">:</span> <span class="s1">&#39;145&#39;</span><span class="p">,</span> <span class="s1">&#39;e&#39;</span><span class="p">:</span> <span class="s1">&#39;15&#39;</span><span class="p">,</span>
     <span class="s1">&#39;f&#39;</span><span class="p">:</span> <span class="s1">&#39;124&#39;</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">:</span> <span class="s1">&#39;1245&#39;</span><span class="p">,</span> <span class="s1">&#39;h&#39;</span><span class="p">:</span> <span class="s1">&#39;125&#39;</span><span class="p">,</span> <span class="s1">&#39;i&#39;</span><span class="p">:</span> <span class="s1">&#39;24&#39;</span><span class="p">,</span> <span class="s1">&#39;j&#39;</span><span class="p">:</span> <span class="s1">&#39;245&#39;</span><span class="p">,</span>
     <span class="s1">&#39;k&#39;</span><span class="p">:</span> <span class="s1">&#39;13&#39;</span><span class="p">,</span> <span class="s1">&#39;l&#39;</span><span class="p">:</span> <span class="s1">&#39;123&#39;</span><span class="p">,</span> <span class="s1">&#39;m&#39;</span><span class="p">:</span> <span class="s1">&#39;134&#39;</span><span class="p">,</span> <span class="s1">&#39;n&#39;</span><span class="p">:</span> <span class="s1">&#39;1345&#39;</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">:</span> <span class="s1">&#39;135&#39;</span><span class="p">,</span>
@@ -93,396 +89,254 @@
     <span class="s1">&#39;u&#39;</span><span class="p">:</span> <span class="s1">&#39;136&#39;</span><span class="p">,</span> <span class="s1">&#39;v&#39;</span><span class="p">:</span> <span class="s1">&#39;1236&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">:</span> <span class="s1">&#39;2456&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="s1">&#39;1346&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="s1">&#39;13456&#39;</span><span class="p">,</span>
     <span class="s1">&#39;z&#39;</span><span class="p">:</span> <span class="s1">&#39;1356&#39;</span><span class="p">,</span>
     
-    <span class="c1"># Vocales acentuadas</span>
+    <span class="c1"># Vocales acentuadas y Ñ (Según tu imagen del PDF)</span>
     <span class="s1">&#39;á&#39;</span><span class="p">:</span> <span class="s1">&#39;12356&#39;</span><span class="p">,</span> <span class="s1">&#39;é&#39;</span><span class="p">:</span> <span class="s1">&#39;2346&#39;</span><span class="p">,</span> <span class="s1">&#39;í&#39;</span><span class="p">:</span> <span class="s1">&#39;34&#39;</span><span class="p">,</span> <span class="s1">&#39;ó&#39;</span><span class="p">:</span> <span class="s1">&#39;346&#39;</span><span class="p">,</span> <span class="s1">&#39;ú&#39;</span><span class="p">:</span> <span class="s1">&#39;23456&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;ü&#39;</span><span class="p">:</span> <span class="s1">&#39;1256&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;ü&#39;</span><span class="p">:</span> <span class="s1">&#39;1256&#39;</span><span class="p">,</span> <span class="s1">&#39;ñ&#39;</span><span class="p">:</span> <span class="s1">&#39;12456&#39;</span><span class="p">,</span>
     
-    <span class="c1"># Ñ</span>
-    <span class="s1">&#39;ñ&#39;</span><span class="p">:</span> <span class="s1">&#39;12456&#39;</span><span class="p">,</span>
-    
-    <span class="c1"># Números (precedidos por signo #) (CP-1.5.01)</span>
-    <span class="s1">&#39;#&#39;</span><span class="p">:</span> <span class="s1">&#39;#&#39;</span><span class="p">,</span>  <span class="c1"># Indicador numérico</span>
-    <span class="s1">&#39;0&#39;</span><span class="p">:</span> <span class="s1">&#39;245&#39;</span><span class="p">,</span> <span class="s1">&#39;1&#39;</span><span class="p">:</span> <span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="s1">&#39;2&#39;</span><span class="p">:</span> <span class="s1">&#39;12&#39;</span><span class="p">,</span> <span class="s1">&#39;3&#39;</span><span class="p">:</span> <span class="s1">&#39;14&#39;</span><span class="p">,</span> <span class="s1">&#39;4&#39;</span><span class="p">:</span> <span class="s1">&#39;145&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;5&#39;</span><span class="p">:</span> <span class="s1">&#39;15&#39;</span><span class="p">,</span> <span class="s1">&#39;6&#39;</span><span class="p">:</span> <span class="s1">&#39;124&#39;</span><span class="p">,</span> <span class="s1">&#39;7&#39;</span><span class="p">:</span> <span class="s1">&#39;1245&#39;</span><span class="p">,</span> <span class="s1">&#39;8&#39;</span><span class="p">:</span> <span class="s1">&#39;125&#39;</span><span class="p">,</span> <span class="s1">&#39;9&#39;</span><span class="p">:</span> <span class="s1">&#39;24&#39;</span><span class="p">,</span>
-    
-    <span class="c1"># Signos de puntuación básicos</span>
-    <span class="s1">&#39;.&#39;</span><span class="p">:</span> <span class="s1">&#39;3&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;,&#39;</span><span class="p">:</span> <span class="s1">&#39;2&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;;&#39;</span><span class="p">:</span> <span class="s1">&#39;23&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;:&#39;</span><span class="p">:</span> <span class="s1">&#39;25&#39;</span><span class="p">,</span>
-    
-    <span class="c1"># Signos adicionales (CP-1.6.06)</span>
-    <span class="s1">&#39;_&#39;</span><span class="p">:</span> <span class="s1">&#39;36&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;&quot;&#39;</span><span class="p">:</span> <span class="s1">&#39;236&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;!&#39;</span><span class="p">:</span> <span class="s1">&#39;235&#39;</span><span class="p">,</span> 
-    <span class="s1">&#39;¡&#39;</span><span class="p">:</span> <span class="s1">&#39;23456&#39;</span><span class="p">,</span> 
-    <span class="s1">&#39;¿&#39;</span><span class="p">:</span> <span class="s1">&#39;2356&#39;</span><span class="p">,</span>  
-    <span class="s1">&#39;?&#39;</span><span class="p">:</span> <span class="s1">&#39;26&#39;</span><span class="p">,</span>  
-    <span class="s1">&#39;(&#39;</span><span class="p">:</span> <span class="s1">&#39;126&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;)&#39;</span><span class="p">:</span> <span class="s1">&#39;345&#39;</span><span class="p">,</span> 
-    <span class="s1">&#39;+&#39;</span><span class="p">:</span> <span class="s1">&#39;235&#39;</span><span class="p">,</span>   
-    <span class="s1">&#39;=&#39;</span><span class="p">:</span> <span class="s1">&#39;2356&#39;</span><span class="p">,</span>  
-    <span class="s1">&#39;÷&#39;</span><span class="p">:</span> <span class="s1">&#39;256&#39;</span><span class="p">,</span>   
-    <span class="s1">&#39;-&#39;</span><span class="p">:</span> <span class="s1">&#39;36&#39;</span><span class="p">,</span>    
-    
-    <span class="c1"># Espacio</span>
-    <span class="s1">&#39; &#39;</span><span class="p">:</span> <span class="s1">&#39; &#39;</span>
+    <span class="c1"># Signos de puntuación CORREGIDOS según tu imagen</span>
+    <span class="s1">&#39;=&#39;</span><span class="p">:</span> <span class="s1">&#39;2356&#39;</span><span class="p">,</span> <span class="c1"># El signo igual</span>
+    <span class="s1">&#39;¿&#39;</span><span class="p">:</span> <span class="s1">&#39;26&#39;</span><span class="p">,</span>     <span class="c1"># Corregido: punto 2 y 6</span>
+    <span class="s1">&#39;?&#39;</span><span class="p">:</span> <span class="s1">&#39;26&#39;</span><span class="p">,</span>     <span class="c1"># En español Braille, abrir y cerrar pregunta es igual</span>
+    <span class="s1">&#39;¡&#39;</span><span class="p">:</span> <span class="s1">&#39;235&#39;</span><span class="p">,</span>    <span class="c1"># Corregido: puntos 2, 3 y 5</span>
+    <span class="s1">&#39;!&#39;</span><span class="p">:</span> <span class="s1">&#39;235&#39;</span><span class="p">,</span>    <span class="c1"># En español Braille, abrir y cerrar admiración es igual</span>
+    <span class="s1">&#39;&quot;&#39;</span><span class="p">:</span> <span class="s1">&#39;236&#39;</span><span class="p">,</span>   <span class="c1"># Comillas dobles</span>
+    <span class="s1">&#39;_&#39;</span><span class="p">:</span> <span class="s1">&#39;36&#39;</span><span class="p">,</span>    <span class="c1"># Guion bajo</span>
+    <span class="s1">&#39;÷&#39;</span><span class="p">:</span> <span class="s1">&#39;256&#39;</span><span class="p">,</span>   <span class="c1"># Signo de división</span>
+    <span class="s1">&#39;.&#39;</span><span class="p">:</span> <span class="s1">&#39;3&#39;</span><span class="p">,</span> <span class="s1">&#39;,&#39;</span><span class="p">:</span> <span class="s1">&#39;2&#39;</span><span class="p">,</span> <span class="s1">&#39;;&#39;</span><span class="p">:</span> <span class="s1">&#39;23&#39;</span><span class="p">,</span> <span class="s1">&#39;:&#39;</span><span class="p">:</span> <span class="s1">&#39;25&#39;</span><span class="p">,</span> <span class="s1">&#39;-&#39;</span><span class="p">:</span> <span class="s1">&#39;36&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;(&#39;</span><span class="p">:</span> <span class="s1">&#39;126&#39;</span><span class="p">,</span> <span class="s1">&#39;)&#39;</span><span class="p">:</span> <span class="s1">&#39;345&#39;</span><span class="p">,</span> <span class="s1">&#39;+&#39;</span><span class="p">:</span> <span class="s1">&#39;235&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">:</span> <span class="s1">&#39; &#39;</span>
 <span class="p">}</span>
-<span class="c1"># Códigos especiales que requieren secuencias</span>
 
+<span class="c1"># Mapeo específico para números (puntos de la &#39;a&#39; a la &#39;j&#39;)</span>
+<span class="n">NUM_BRAILLE_MAP</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;1&#39;</span><span class="p">:</span> <span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="s1">&#39;2&#39;</span><span class="p">:</span> <span class="s1">&#39;12&#39;</span><span class="p">,</span> <span class="s1">&#39;3&#39;</span><span class="p">:</span> <span class="s1">&#39;14&#39;</span><span class="p">,</span> <span class="s1">&#39;4&#39;</span><span class="p">:</span> <span class="s1">&#39;145&#39;</span><span class="p">,</span> <span class="s1">&#39;5&#39;</span><span class="p">:</span> <span class="s1">&#39;15&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;6&#39;</span><span class="p">:</span> <span class="s1">&#39;124&#39;</span><span class="p">,</span> <span class="s1">&#39;7&#39;</span><span class="p">:</span> <span class="s1">&#39;1245&#39;</span><span class="p">,</span> <span class="s1">&#39;8&#39;</span><span class="p">:</span> <span class="s1">&#39;125&#39;</span><span class="p">,</span> <span class="s1">&#39;9&#39;</span><span class="p">:</span> <span class="s1">&#39;24&#39;</span><span class="p">,</span> <span class="s1">&#39;0&#39;</span><span class="p">:</span> <span class="s1">&#39;245&#39;</span>
+<span class="p">}</span>
 
+<span class="c1"># 2. GENERACIÓN DE MAPAS INVERSOS CON PRIORIDAD (Evita colisión ú/¡)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_generar_reverse_map</span><span class="p">():</span>
+    <span class="n">rev_map</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="c1"># Primero agregamos símbolos (tienen menor prioridad)</span>
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">BRAILLE_MAP</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">k</span><span class="o">.</span><span class="n">isalnum</span><span class="p">()</span> <span class="ow">and</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="s1">&#39;áéíóúüñ&#39;</span><span class="p">:</span>
+            <span class="n">rev_map</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">k</span>
+    <span class="c1"># Luego agregamos letras (sobrescriben a los símbolos si el código es igual)</span>
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">BRAILLE_MAP</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">k</span><span class="o">.</span><span class="n">isalpha</span><span class="p">()</span> <span class="ow">or</span> <span class="n">k</span> <span class="ow">in</span> <span class="s1">&#39;áéíóúüñ&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">v</span> <span class="o">!=</span> <span class="s1">&#39; &#39;</span><span class="p">:</span> <span class="n">rev_map</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">k</span>
+    <span class="k">return</span> <span class="n">rev_map</span>
+
+<span class="n">REVERSE_BRAILLE_MAP</span> <span class="o">=</span> <span class="n">_generar_reverse_map</span><span class="p">()</span>
+<span class="n">REVERSE_NUMBER_MAP</span> <span class="o">=</span> <span class="p">{</span><span class="n">v</span><span class="p">:</span> <span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">BRAILLE_MAP</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()}</span>
+
+<span class="c1"># --- FUNCIONES DE APOYO ---</span>
 
 <div class="viewcode-block" id="es_numero">
 <a class="viewcode-back" href="../api.html#app.es_numero">[documentos]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">es_numero</span><span class="p">(</span><span class="n">caracter</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Verifica si un carácter es un dígito numérico.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">caracter</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()</span></div>
-
 
 
 <div class="viewcode-block" id="generar_celda_braille_svg">
 <a class="viewcode-back" href="../api.html#app.generar_celda_braille_svg">[documentos]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">generar_celda_braille_svg</span><span class="p">(</span><span class="n">codigo_braille</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Genera el SVG de una celda Braille con sus puntos correspondientes.</span>
-
-<span class="sd">    Una celda Braille estándar tiene 6 posiciones de puntos organizadas en </span>
-<span class="sd">    dos columnas de 3 puntos cada una:</span>
-<span class="sd">    </span>
-<span class="sd">    Posiciones:  1  4</span>
-<span class="sd">                 2  5</span>
-<span class="sd">                 3  6</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        codigo_braille (str): Código numérico Braille (ej: &#39;1&#39;, &#39;12&#39;, &#39;145&#39;, &#39;#&#39;, &#39;6&#39;).</span>
-<span class="sd">        x (float): Coordenada X de inicio de la celda.</span>
-<span class="sd">        y (float): Coordenada Y de inicio de la celda.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        str: Fragmento SVG con los círculos que representan los puntos activos.</span>
-
-<span class="sd">    Examples:</span>
-<span class="sd">        &gt;&gt;&gt; generar_celda_braille_svg(&#39;1&#39;, 0, 0)</span>
-<span class="sd">        # Retorna SVG con un círculo en posición 1</span>
-<span class="sd">        &gt;&gt;&gt; generar_celda_braille_svg(&#39;145&#39;, 10, 20)</span>
-<span class="sd">        # Retorna SVG con círculos en posiciones 1, 4 y 5</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Mapeo de códigos especiales a sus representaciones numéricas</span>
-    <span class="n">codigos_especiales</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s1">&#39;#&#39;</span><span class="p">:</span> <span class="s1">&#39;3456&#39;</span><span class="p">,</span>  <span class="c1"># Prefijo numérico</span>
-        <span class="s1">&#39;6&#39;</span><span class="p">:</span> <span class="s1">&#39;6&#39;</span><span class="p">,</span>     <span class="c1"># Prefijo de mayúscula (punto 6)</span>
-    <span class="p">}</span>
-    
-    <span class="c1"># Convertir códigos especiales a sus dígitos correspondientes</span>
+    <span class="n">codigos_especiales</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;#&#39;</span><span class="p">:</span> <span class="s1">&#39;3456&#39;</span><span class="p">,</span> <span class="s1">&#39;6&#39;</span><span class="p">:</span> <span class="s1">&#39;6&#39;</span><span class="p">}</span>
     <span class="k">if</span> <span class="n">codigo_braille</span> <span class="ow">in</span> <span class="n">codigos_especiales</span><span class="p">:</span>
         <span class="n">codigo_braille</span> <span class="o">=</span> <span class="n">codigos_especiales</span><span class="p">[</span><span class="n">codigo_braille</span><span class="p">]</span>
     
-    <span class="c1"># Dimensiones de la celda Braille estándar</span>
     <span class="n">dot_radius</span> <span class="o">=</span> <span class="mi">3</span>
     <span class="n">dot_spacing_horizontal</span> <span class="o">=</span> <span class="mi">10</span>
     <span class="n">dot_spacing_vertical</span> <span class="o">=</span> <span class="mi">10</span>
-    
-    <span class="c1"># Posiciones de los 6 puntos en la celda Braille</span>
     <span class="n">dot_positions</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s1">&#39;1&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span>
-        <span class="s1">&#39;2&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="n">dot_spacing_vertical</span><span class="p">),</span>
-        <span class="s1">&#39;3&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">dot_spacing_vertical</span><span class="p">),</span>
-        <span class="s1">&#39;4&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">dot_spacing_horizontal</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span>
-        <span class="s1">&#39;5&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">dot_spacing_horizontal</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="n">dot_spacing_vertical</span><span class="p">),</span>
+        <span class="s1">&#39;1&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="s1">&#39;2&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="n">dot_spacing_vertical</span><span class="p">),</span> <span class="s1">&#39;3&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">dot_spacing_vertical</span><span class="p">),</span>
+        <span class="s1">&#39;4&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">dot_spacing_horizontal</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="s1">&#39;5&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">dot_spacing_horizontal</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="n">dot_spacing_vertical</span><span class="p">),</span>
         <span class="s1">&#39;6&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">dot_spacing_horizontal</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">dot_spacing_vertical</span><span class="p">)</span>
     <span class="p">}</span>
-    
     <span class="n">svg_circles</span> <span class="o">=</span> <span class="p">[]</span>
-    
-    <span class="c1"># Dibujar todos los puntos en gris claro (inactivos)</span>
     <span class="k">for</span> <span class="n">pos</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="s1">&#39;2&#39;</span><span class="p">,</span> <span class="s1">&#39;3&#39;</span><span class="p">,</span> <span class="s1">&#39;4&#39;</span><span class="p">,</span> <span class="s1">&#39;5&#39;</span><span class="p">,</span> <span class="s1">&#39;6&#39;</span><span class="p">]:</span>
         <span class="n">px</span><span class="p">,</span> <span class="n">py</span> <span class="o">=</span> <span class="n">dot_positions</span><span class="p">[</span><span class="n">pos</span><span class="p">]</span>
-        <span class="n">svg_circles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&lt;circle cx=&quot;</span><span class="si">{</span><span class="n">px</span><span class="si">}</span><span class="s1">&quot; cy=&quot;</span><span class="si">{</span><span class="n">py</span><span class="si">}</span><span class="s1">&quot; r=&quot;</span><span class="si">{</span><span class="n">dot_radius</span><span class="si">}</span><span class="s1">&quot; fill=&quot;#e0e0e0&quot; stroke=&quot;#999&quot; stroke-width=&quot;0.5&quot;/&gt;&#39;</span><span class="p">)</span>
-    
-    <span class="c1"># Dibujar puntos activos en negro</span>
-    <span class="k">for</span> <span class="n">digit</span> <span class="ow">in</span> <span class="n">codigo_braille</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">digit</span> <span class="ow">in</span> <span class="n">dot_positions</span><span class="p">:</span>
-            <span class="n">px</span><span class="p">,</span> <span class="n">py</span> <span class="o">=</span> <span class="n">dot_positions</span><span class="p">[</span><span class="n">digit</span><span class="p">]</span>
-            <span class="n">svg_circles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&lt;circle cx=&quot;</span><span class="si">{</span><span class="n">px</span><span class="si">}</span><span class="s1">&quot; cy=&quot;</span><span class="si">{</span><span class="n">py</span><span class="si">}</span><span class="s1">&quot; r=&quot;</span><span class="si">{</span><span class="n">dot_radius</span><span class="si">}</span><span class="s1">&quot; fill=&quot;#000&quot;/&gt;&#39;</span><span class="p">)</span>
-    
-    <span class="k">return</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">        &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">svg_circles</span><span class="p">)</span></div>
+        <span class="n">color</span> <span class="o">=</span> <span class="s2">&quot;#000&quot;</span> <span class="k">if</span> <span class="n">pos</span> <span class="ow">in</span> <span class="n">codigo_braille</span> <span class="k">else</span> <span class="s2">&quot;#e0e0e0&quot;</span>
+        <span class="n">stroke</span> <span class="o">=</span> <span class="s2">&quot;#999&quot;</span> <span class="k">if</span> <span class="n">pos</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">codigo_braille</span> <span class="k">else</span> <span class="s2">&quot;none&quot;</span>
+        <span class="n">svg_circles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&lt;circle cx=&quot;</span><span class="si">{</span><span class="n">px</span><span class="si">}</span><span class="s1">&quot; cy=&quot;</span><span class="si">{</span><span class="n">py</span><span class="si">}</span><span class="s1">&quot; r=&quot;</span><span class="si">{</span><span class="n">dot_radius</span><span class="si">}</span><span class="s1">&quot; fill=&quot;</span><span class="si">{</span><span class="n">color</span><span class="si">}</span><span class="s1">&quot; stroke=&quot;</span><span class="si">{</span><span class="n">stroke</span><span class="si">}</span><span class="s1">&quot; stroke-width=&quot;0.5&quot;/&gt;&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">svg_circles</span><span class="p">)</span></div>
 
 
-
-<div class="viewcode-block" id="transcribir_character">
-<a class="viewcode-back" href="../api.html#app.transcribir_character">[documentos]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">transcribir_character</span><span class="p">(</span><span class="n">character</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">anterior_es_numero</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> 
-                         <span class="n">siguiente_es_numero</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Mapea un carácter individual a su representación en código Braille numérico.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        character (str): Carácter a transcribir.</span>
-<span class="sd">        anterior_es_numero (bool): Indica si el carácter anterior era un número.</span>
-<span class="sd">        siguiente_es_numero (bool): Indica si el siguiente carácter es un número.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        list: Lista de códigos Braille para el carácter.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">char_lower</span> <span class="o">=</span> <span class="n">character</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-    
-    
-    <span class="c1"># Manejar números: agregar # solo antes del primer número de una secuencia</span>
-    <span class="k">if</span> <span class="n">es_numero</span><span class="p">(</span><span class="n">char_lower</span><span class="p">):</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">anterior_es_numero</span><span class="p">:</span>
-            <span class="c1"># Primer número de la secuencia, agregar signo #</span>
-            <span class="k">return</span> <span class="p">[</span><span class="s1">&#39;#&#39;</span><span class="p">,</span> <span class="n">BRAILLE_MAP</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">char_lower</span><span class="p">,</span> <span class="n">char_lower</span><span class="p">)]</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="c1"># Número subsecuente, no agregar #</span>
-            <span class="k">return</span> <span class="p">[</span><span class="n">BRAILLE_MAP</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">char_lower</span><span class="p">,</span> <span class="n">char_lower</span><span class="p">)]</span>
-    
-    <span class="c1"># Manejar &#39;x&#39; en contexto numérico (multiplicación)</span>
-    <span class="k">if</span> <span class="n">char_lower</span> <span class="o">==</span> <span class="s1">&#39;x&#39;</span> <span class="ow">and</span> <span class="p">(</span><span class="n">anterior_es_numero</span> <span class="ow">or</span> <span class="n">siguiente_es_numero</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">[</span><span class="s1">&#39;236&#39;</span><span class="p">]</span>  <span class="c1"># Código especial para multiplicación en contexto numérico</span>
-    
-    <span class="c1"># Manejar punto y coma en contexto numérico</span>
-    <span class="k">if</span> <span class="n">char_lower</span> <span class="ow">in</span> <span class="s1">&#39;.,&#39;</span><span class="p">:</span>
-        <span class="c1"># Si está entre números o después de un número, mantener en modo numérico</span>
-        <span class="k">if</span> <span class="n">anterior_es_numero</span> <span class="ow">or</span> <span class="n">siguiente_es_numero</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">[</span><span class="n">BRAILLE_MAP</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">char_lower</span><span class="p">,</span> <span class="n">char_lower</span><span class="p">)]</span>
-    
-    <span class="c1"># Manejar mayúsculas: agregar prefijo &#39;6&#39; antes de la letra</span>
-    <span class="k">if</span> <span class="n">character</span><span class="o">.</span><span class="n">isalpha</span><span class="p">()</span> <span class="ow">and</span> <span class="n">character</span><span class="o">.</span><span class="n">isupper</span><span class="p">():</span>
-        <span class="k">return</span> <span class="p">[</span><span class="s1">&#39;6&#39;</span><span class="p">,</span> <span class="n">BRAILLE_MAP</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">char_lower</span><span class="p">,</span> <span class="n">char_lower</span><span class="p">)]</span>
-    
-    <span class="c1"># Caracteres normales</span>
-    <span class="k">return</span> <span class="p">[</span><span class="n">BRAILLE_MAP</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">char_lower</span><span class="p">,</span> <span class="n">char_lower</span><span class="p">)]</span></div>
-
+<span class="c1"># --- LÓGICA DE TRADUCCIÓN ---</span>
 
 <div class="viewcode-block" id="transcribir_texto_completo">
 <a class="viewcode-back" href="../api.html#app.transcribir_texto_completo">[documentos]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">transcribir_texto_completo</span><span class="p">(</span><span class="n">texto</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Transcribe una cadena de texto completa a código Braille numérico.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        texto (str): Texto a transcribir.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        str: Cadena con códigos Braille separados por espacios.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">resultado_braille</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Español -&gt; Braille con puntos correctos para números.&quot;&quot;&quot;</span>
+    <span class="n">resultado</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">modo_numerico</span> <span class="o">=</span> <span class="kc">False</span>
     
-    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">char</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">texto</span><span class="p">):</span>
-        <span class="c1"># Determinar contexto numérico considerando punto y coma</span>
-        <span class="n">anterior_es_numero</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="p">(</span><span class="n">es_numero</span><span class="p">(</span><span class="n">texto</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="ow">or</span> <span class="n">texto</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="ow">in</span> <span class="s1">&#39;.,&#39;</span><span class="p">))</span>
-        <span class="n">siguiente_es_numero</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">texto</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span> <span class="ow">and</span> <span class="p">(</span><span class="n">es_numero</span><span class="p">(</span><span class="n">texto</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span> <span class="ow">or</span> <span class="n">texto</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="ow">in</span> <span class="s1">&#39;.,&#39;</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">texto</span><span class="p">:</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">char</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
         
-        <span class="c1"># Transcribir carácter</span>
-        <span class="n">braille_codes</span> <span class="o">=</span> <span class="n">transcribir_character</span><span class="p">(</span><span class="n">char</span><span class="p">,</span> <span class="n">anterior_es_numero</span><span class="p">,</span> <span class="n">siguiente_es_numero</span><span class="p">)</span>
-        <span class="n">resultado_braille</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">braille_codes</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">isdigit</span><span class="p">():</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">modo_numerico</span><span class="p">:</span>
+                <span class="n">resultado</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;3456&#39;</span><span class="p">)</span> <span class="c1"># Signo de número</span>
+                <span class="n">modo_numerico</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="c1"># IMPORTANTE: Usamos NUM_BRAILLE_MAP para obtener los PUNTOS, no el dígito</span>
+            <span class="n">resultado</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">NUM_BRAILLE_MAP</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">))</span>
+        
+        <span class="k">elif</span> <span class="n">c</span> <span class="o">==</span> <span class="s1">&#39; &#39;</span><span class="p">:</span>
+            <span class="n">resultado</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+            <span class="n">modo_numerico</span> <span class="o">=</span> <span class="kc">False</span>
+            
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">modo_numerico</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">if</span> <span class="n">char</span><span class="o">.</span><span class="n">isupper</span><span class="p">():</span>
+                <span class="n">resultado</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;46&#39;</span><span class="p">)</span> <span class="c1"># Signo de mayúscula</span>
+            <span class="n">resultado</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">BRAILLE_MAP</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">c</span><span class="p">))</span>
+
+    <span class="c1"># Unión final con espacios entre celdas</span>
+    <span class="k">return</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">resultado</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="reverse_transcribe">
+<a class="viewcode-back" href="../api.html#app.reverse_transcribe">[documentos]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">reverse_transcribe</span><span class="p">(</span><span class="n">braille_codes_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Braille -&gt; Español: Diferencia entre letras y números tras el signo #.&quot;&quot;&quot;</span>
+    <span class="c1"># IMPORTANTE: No eliminamos los elementos vacíos aquí</span>
+    <span class="n">raw_codes</span> <span class="o">=</span> <span class="n">braille_codes_str</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+    <span class="n">resultado</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">modo_numerico</span> <span class="o">=</span> <span class="kc">False</span>
     
-    <span class="k">return</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">resultado_braille</span><span class="p">)</span></div>
+    <span class="n">REVERSE_NUM_MAP</span> <span class="o">=</span> <span class="p">{</span><span class="n">v</span><span class="p">:</span> <span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">NUM_BRAILLE_MAP</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+    <span class="n">REVERSE_LETRA_MAP</span> <span class="o">=</span> <span class="n">REVERSE_BRAILLE_MAP</span> 
 
+    <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">raw_codes</span><span class="p">):</span>
+        <span class="n">code</span> <span class="o">=</span> <span class="n">raw_codes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        
+        <span class="c1"># 1. SI EL CÓDIGO ESTÁ VACÍO: Significa que hay un espacio (o doble espacio en la entrada)</span>
+        <span class="k">if</span> <span class="n">code</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+            <span class="n">resultado</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+            <span class="n">modo_numerico</span> <span class="o">=</span> <span class="kc">False</span> <span class="c1"># El espacio rompe el modo numérico</span>
+            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">continue</span>
 
+        <span class="c1"># 2. Detectar signo de número</span>
+        <span class="k">if</span> <span class="n">code</span> <span class="o">==</span> <span class="s1">&#39;3456&#39;</span><span class="p">:</span>
+            <span class="n">modo_numerico</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">continue</span>
+            
+        <span class="c1"># 3. Traducir según el modo activo</span>
+        <span class="k">if</span> <span class="n">modo_numerico</span><span class="p">:</span>
+            <span class="n">num</span> <span class="o">=</span> <span class="n">REVERSE_NUM_MAP</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">num</span><span class="p">:</span>
+                <span class="n">resultado</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">num</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">modo_numerico</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="n">resultado</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">REVERSE_LETRA_MAP</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="s1">&#39;?&#39;</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Manejo de mayúsculas (Prefijo 46)</span>
+            <span class="k">if</span> <span class="n">code</span> <span class="o">==</span> <span class="s1">&#39;46&#39;</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">raw_codes</span><span class="p">):</span>
+                <span class="n">siguiente_codigo</span> <span class="o">=</span> <span class="n">raw_codes</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+                <span class="c1"># Si lo que sigue es un espacio, solo ignoramos el prefijo o ponemos error</span>
+                <span class="k">if</span> <span class="n">siguiente_codigo</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+                    <span class="n">resultado</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+                    <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">letra</span> <span class="o">=</span> <span class="n">REVERSE_LETRA_MAP</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">siguiente_codigo</span><span class="p">,</span> <span class="s1">&#39;?&#39;</span><span class="p">)</span>
+                    <span class="n">resultado</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">letra</span><span class="o">.</span><span class="n">upper</span><span class="p">())</span>
+                    <span class="n">i</span> <span class="o">+=</span> <span class="mi">2</span>
+                <span class="k">continue</span>
+            
+            <span class="c1"># Traducción normal de letras y símbolos</span>
+            <span class="n">resultado</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">REVERSE_LETRA_MAP</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="s1">&#39;?&#39;</span><span class="p">))</span>
+        
+        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+        
+    <span class="c1"># Limpiamos espacios dobles accidentales al final y unimos</span>
+    <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">resultado</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;  &#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span></div>
 
+<span class="c1"># --- ENDPOINTS API ---</span>
 
 <div class="viewcode-block" id="transcribe_text">
 <a class="viewcode-back" href="../api.html#app.transcribe_text">[documentos]</a>
 <span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/api/transcribe&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">transcribe_text</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Endpoint para transcripción de texto a código Braille numérico (RG-1).</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">data</span> <span class="ow">or</span> <span class="s1">&#39;text&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;No se proporcionó texto&quot;</span><span class="p">}),</span> <span class="mi">400</span>
+    <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s2">&quot;input&quot;</span><span class="p">:</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">],</span> <span class="s2">&quot;braille_codes&quot;</span><span class="p">:</span> <span class="n">transcribir_texto_completo</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">])})</span></div>
 
-<span class="sd">    Recibe un JSON con el campo &#39;text&#39; y devuelve su representación en</span>
-<span class="sd">    código Braille numérico. Soporta letras (a-z), números (0-9) y signos</span>
-<span class="sd">    básicos de puntuación (coma y punto) en contextos textuales y numéricos.</span>
 
-<span class="sd">    Request JSON:</span>
-<span class="sd">        text (str): Texto en español a transcribir. Puede contener letras,</span>
-<span class="sd">            números, espacios y signos de puntuación (coma y punto).</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        tuple: JSON response con los siguientes campos:</span>
-<span class="sd">            - input (str): Texto original recibido.</span>
-<span class="sd">            - braille_codes (str): Códigos Braille separados por espacios.</span>
-<span class="sd">        </span>
-<span class="sd">        Status code: 200 si es exitoso, 400 si no se proporciona texto.</span>
-
-<span class="sd">    Raises:</span>
-<span class="sd">        400: Si no se proporciona el campo &#39;text&#39; en el JSON.</span>
-
-<span class="sd">    Examples:</span>
-<span class="sd">        Request:</span>
-<span class="sd">            &gt;&gt;&gt; {</span>
-<span class="sd">            ...     &quot;text&quot;: &quot;hola&quot;</span>
-<span class="sd">            ... }</span>
-
-<span class="sd">        Response:</span>
-<span class="sd">            &gt;&gt;&gt; {</span>
-<span class="sd">            ...     &quot;input&quot;: &quot;hola&quot;,</span>
-<span class="sd">            ...     &quot;braille_codes&quot;: &quot;125 135 123 1&quot;</span>
-<span class="sd">            ... }</span>
-
-<span class="sd">        Request con signos básicos (contexto textual):</span>
-<span class="sd">            &gt;&gt;&gt; {</span>
-<span class="sd">            ...     &quot;text&quot;: &quot;Hola, mundo.&quot;</span>
-<span class="sd">            ... }</span>
-
-<span class="sd">        Response:</span>
-<span class="sd">            &gt;&gt;&gt; {</span>
-<span class="sd">            ...     &quot;input&quot;: &quot;Hola, mundo.&quot;,</span>
-<span class="sd">            ...     &quot;braille_codes&quot;: &quot;6 125 135 123 1 2 134 136 1345 145 135 3&quot;</span>
-<span class="sd">            ... }</span>
-
-<span class="sd">        Request con mayúscula:</span>
-<span class="sd">            &gt;&gt;&gt; {</span>
-<span class="sd">            ...     &quot;text&quot;: &quot;A&quot;</span>
-<span class="sd">            ... }</span>
-
-<span class="sd">        Response:</span>
-<span class="sd">            &gt;&gt;&gt; {</span>
-<span class="sd">            ...     &quot;input&quot;: &quot;A&quot;,</span>
-<span class="sd">            ...     &quot;braille_codes&quot;: &quot;6 1&quot;</span>
-<span class="sd">            ... }</span>
-
-<span class="sd">        Request con números y signos (contexto numérico):</span>
-<span class="sd">            &gt;&gt;&gt; {</span>
-<span class="sd">            ...     &quot;text&quot;: &quot;2.329,724&quot;</span>
-<span class="sd">            ... }</span>
-
-<span class="sd">        Response:</span>
-<span class="sd">            &gt;&gt;&gt; {</span>
-<span class="sd">            ...     &quot;input&quot;: &quot;2.329,724&quot;,</span>
-<span class="sd">            ...     &quot;braille_codes&quot;: &quot;#12 3 14 12 145 2 1245 12 145&quot;</span>
-<span class="sd">            ... }</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span> <span class="ow">or</span> <span class="s1">&#39;text&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;No se proporcionó texto de entrada.&quot;</span><span class="p">}),</span> <span class="mi">400</span>
+<div class="viewcode-block" id="reverse_api">
+<a class="viewcode-back" href="../api.html#app.reverse_api">[documentos]</a>
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/api/reverse-transcribe&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span> <span class="s1">&#39;OPTIONS&#39;</span><span class="p">])</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">reverse_api</span><span class="p">():</span>
+    <span class="c1"># Esto maneja errores de conexión previos</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;OPTIONS&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="mi">200</span>
+        
+    <span class="n">data</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">get_json</span><span class="p">()</span>
+    <span class="c1"># Buscamos &#39;braille_codes&#39; que es lo que envía tu script.js actual</span>
+    <span class="n">codigo</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;braille_codes&#39;</span><span class="p">)</span>
     
-    <span class="n">input_text</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]</span>
-    <span class="n">braille_output</span> <span class="o">=</span> <span class="n">transcribir_texto_completo</span><span class="p">(</span><span class="n">input_text</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">codigo</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;No hay datos&quot;</span><span class="p">,</span> <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;Formato incorrecto&quot;</span><span class="p">}),</span> <span class="mi">400</span>
     
+    <span class="n">resultado</span> <span class="o">=</span> <span class="n">reverse_transcribe</span><span class="p">(</span><span class="n">codigo</span><span class="p">)</span>
+    
+    <span class="c1"># IMPORTANTE: Devolvemos &#39;text&#39; porque tu JS busca data.text</span>
     <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span>
-        <span class="s2">&quot;input&quot;</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">],</span>
-        <span class="s2">&quot;braille_codes&quot;</span><span class="p">:</span> <span class="n">braille_output</span>
+        <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="n">resultado</span><span class="p">,</span>
+        <span class="s2">&quot;braille_codes&quot;</span><span class="p">:</span> <span class="n">codigo</span>
     <span class="p">})</span></div>
-
-
 
 
 <div class="viewcode-block" id="generar_senaletica">
 <a class="viewcode-back" href="../api.html#app.generar_senaletica">[documentos]</a>
 <span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/api/generar_senaletica&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">generar_senaletica</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Endpoint para generación de señalética Braille en formato SVG (RG-2).</span>
-
-<span class="sd">    Recibe un JSON con el campo &#39;text&#39; y devuelve una representación</span>
-<span class="sd">    visual SVG de la señalética Braille con puntos táctiles y texto en tinta.</span>
-<span class="sd">    </span>
-<span class="sd">    El SVG generado incluye:</span>
-<span class="sd">    - Representación visual de celdas Braille con puntos activos e inactivos</span>
-<span class="sd">    - Texto en tinta (texto original) encima de la representación Braille</span>
-<span class="sd">    - Formato vectorial escalable sin pérdida de calidad</span>
-
-<span class="sd">    Request JSON:</span>
-<span class="sd">        text (str): Texto a convertir en señalética. Soporta letras, números,</span>
-<span class="sd">            mayúsculas y signos básicos (coma y punto).</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        flask.Response: Documento SVG con la representación visual de la </span>
-<span class="sd">            señalética Braille. Content-Type: image/svg+xml.</span>
-
-<span class="sd">    Examples:</span>
-<span class="sd">        Request:</span>
-<span class="sd">            &gt;&gt;&gt; {</span>
-<span class="sd">            ...     &quot;text&quot;: &quot;2&quot;</span>
-<span class="sd">            ... }</span>
-
-<span class="sd">        Response (SVG):</span>
-<span class="sd">            &lt;svg width=&quot;...&quot; height=&quot;...&quot; viewBox=&quot;...&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;&gt;</span>
-<span class="sd">                &lt;!-- Texto en tinta --&gt;</span>
-<span class="sd">                &lt;text&gt;2&lt;/text&gt;</span>
-<span class="sd">                &lt;!-- Representación Braille del prefijo numérico # --&gt;</span>
-<span class="sd">                &lt;circle .../&gt; &lt;!-- Puntos para # --&gt;</span>
-<span class="sd">                &lt;!-- Representación Braille del número 2 --&gt;</span>
-<span class="sd">                &lt;circle .../&gt; &lt;!-- Puntos para 2 (código 12) --&gt;</span>
-<span class="sd">            &lt;/svg&gt;</span>
-
-<span class="sd">        Request:</span>
-<span class="sd">            &gt;&gt;&gt; {</span>
-<span class="sd">            ...     &quot;text&quot;: &quot;Hola&quot;</span>
-<span class="sd">            ... }</span>
-
-<span class="sd">        Response (SVG):</span>
-<span class="sd">            SVG con representación Braille de &quot;6 125 135 123 1&quot; </span>
-<span class="sd">            (prefijo mayúscula + h + o + l + a)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span> <span class="ow">or</span> <span class="s1">&#39;text&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;No se proporcionó texto de entrada.&quot;</span><span class="p">}),</span> <span class="mi">400</span>
-    
-    <span class="n">text</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]</span>
-    
-    <span class="c1"># Transcribir el texto a códigos Braille</span>
-    <span class="n">braille_codes</span> <span class="o">=</span> <span class="n">transcribir_texto_completo</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
-    <span class="n">codes_list</span> <span class="o">=</span> <span class="n">braille_codes</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
-    
-    <span class="c1"># Dimensiones de la señalética</span>
-    <span class="n">cell_width</span> <span class="o">=</span> <span class="mi">25</span>
-    <span class="n">cell_height</span> <span class="o">=</span> <span class="mi">35</span>
-    <span class="n">margin</span> <span class="o">=</span> <span class="mi">20</span>
-    <span class="n">text_height</span> <span class="o">=</span> <span class="mi">30</span>
-    
-    <span class="c1"># Calcular dimensiones totales del SVG</span>
-    <span class="n">total_width</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">codes_list</span><span class="p">)</span> <span class="o">*</span> <span class="n">cell_width</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">margin</span>
-    <span class="n">total_height</span> <span class="o">=</span> <span class="n">cell_height</span> <span class="o">+</span> <span class="n">text_height</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">margin</span>
-    
-    <span class="c1"># Iniciar el SVG</span>
-    <span class="n">svg_parts</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="sa">f</span><span class="s1">&#39;&lt;svg width=&quot;</span><span class="si">{</span><span class="n">total_width</span><span class="si">}</span><span class="s1">&quot; height=&quot;</span><span class="si">{</span><span class="n">total_height</span><span class="si">}</span><span class="s1">&quot; viewBox=&quot;0 0 </span><span class="si">{</span><span class="n">total_width</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">total_height</span><span class="si">}</span><span class="s1">&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;&gt;&#39;</span><span class="p">,</span>
-        <span class="sa">f</span><span class="s1">&#39;    &lt;!-- Fondo --&gt;&#39;</span><span class="p">,</span>
-        <span class="sa">f</span><span class="s1">&#39;    &lt;rect width=&quot;</span><span class="si">{</span><span class="n">total_width</span><span class="si">}</span><span class="s1">&quot; height=&quot;</span><span class="si">{</span><span class="n">total_height</span><span class="si">}</span><span class="s1">&quot; fill=&quot;#ffffff&quot; stroke=&quot;#cccccc&quot; stroke-width=&quot;1&quot;/&gt;&#39;</span><span class="p">,</span>
-        <span class="sa">f</span><span class="s1">&#39;    &#39;</span><span class="p">,</span>
-        <span class="sa">f</span><span class="s1">&#39;    &lt;!-- Texto en tinta --&gt;&#39;</span><span class="p">,</span>
-        <span class="sa">f</span><span class="s1">&#39;    &lt;text x=&quot;</span><span class="si">{</span><span class="n">total_width</span><span class="o">/</span><span class="mi">2</span><span class="si">}</span><span class="s1">&quot; y=&quot;</span><span class="si">{</span><span class="n">margin</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">15</span><span class="si">}</span><span class="s1">&quot; font-family=&quot;Arial, sans-serif&quot; font-size=&quot;18&quot; font-weight=&quot;bold&quot; text-anchor=&quot;middle&quot; fill=&quot;#000&quot;&gt;</span><span class="si">{</span><span class="n">text</span><span class="si">}</span><span class="s1">&lt;/text&gt;&#39;</span><span class="p">,</span>
-        <span class="sa">f</span><span class="s1">&#39;    &#39;</span><span class="p">,</span>
-        <span class="sa">f</span><span class="s1">&#39;    &lt;!-- Representación Braille --&gt;&#39;</span>
-    <span class="p">]</span>
-    
-    <span class="c1"># Generar cada celda Braille</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;text&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">codes_list</span> <span class="o">=</span> <span class="n">transcribir_texto_completo</span><span class="p">(</span><span class="n">text</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+    <span class="n">cell_w</span><span class="p">,</span> <span class="n">cell_h</span><span class="p">,</span> <span class="n">margin</span> <span class="o">=</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="mi">20</span>
+    <span class="n">total_w</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">codes_list</span><span class="p">)</span> <span class="o">*</span> <span class="n">cell_w</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">margin</span>
+    <span class="n">total_h</span> <span class="o">=</span> <span class="n">cell_h</span> <span class="o">+</span> <span class="mi">50</span>
+    <span class="n">svg</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;&lt;svg width=&quot;</span><span class="si">{</span><span class="n">total_w</span><span class="si">}</span><span class="s1">&quot; height=&quot;</span><span class="si">{</span><span class="n">total_h</span><span class="si">}</span><span class="s1">&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;&gt;&#39;</span><span class="p">,</span>
+           <span class="sa">f</span><span class="s1">&#39;&lt;rect width=&quot;100%&quot; height=&quot;100%&quot; fill=&quot;white&quot;/&gt;&#39;</span><span class="p">]</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">code</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">codes_list</span><span class="p">):</span>
-        <span class="n">cell_x</span> <span class="o">=</span> <span class="n">margin</span> <span class="o">+</span> <span class="n">i</span> <span class="o">*</span> <span class="n">cell_width</span> <span class="o">+</span> <span class="mi">5</span>
-        <span class="n">cell_y</span> <span class="o">=</span> <span class="n">margin</span> <span class="o">+</span> <span class="n">text_height</span> <span class="o">+</span> <span class="mi">5</span>
-        
-        <span class="c1"># Generar la celda Braille</span>
-        <span class="n">braille_cell</span> <span class="o">=</span> <span class="n">generar_celda_braille_svg</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">cell_x</span><span class="p">,</span> <span class="n">cell_y</span><span class="p">)</span>
-        <span class="n">svg_parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;    &lt;!-- Celda </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s1">: código </span><span class="si">{</span><span class="n">code</span><span class="si">}</span><span class="s1"> --&gt;&#39;</span><span class="p">)</span>
-        <span class="n">svg_parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;    </span><span class="si">{</span><span class="n">braille_cell</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">svg</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">generar_celda_braille_svg</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">margin</span> <span class="o">+</span> <span class="n">i</span> <span class="o">*</span> <span class="n">cell_w</span><span class="p">,</span> <span class="mi">45</span><span class="p">))</span>
+    <span class="n">svg</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&lt;/svg&gt;&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">app</span><span class="o">.</span><span class="n">response_class</span><span class="p">(</span><span class="n">response</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">svg</span><span class="p">),</span> <span class="n">status</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">mimetype</span><span class="o">=</span><span class="s1">&#39;image/svg+xml&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="generar_senaletica_espejo">
+<a class="viewcode-back" href="../api.html#app.generar_senaletica_espejo">[documentos]</a>
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/api/generar_senaletica_espejo&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">generar_senaletica_espejo</span><span class="p">():</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;text&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">codes_list</span> <span class="o">=</span> <span class="n">transcribir_texto_completo</span><span class="p">(</span><span class="n">text</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+    <span class="c1"># Invertir orden de celdas para lectura por detrás</span>
+    <span class="n">codes_list</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
     
-    <span class="n">svg_parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&lt;/svg&gt;&#39;</span><span class="p">)</span>
-    
-    <span class="n">svg_output</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">svg_parts</span><span class="p">)</span>
-    
-    <span class="k">return</span> <span class="n">app</span><span class="o">.</span><span class="n">response_class</span><span class="p">(</span><span class="n">response</span><span class="o">=</span><span class="n">svg_output</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">mimetype</span><span class="o">=</span><span class="s1">&#39;image/svg+xml&#39;</span><span class="p">)</span></div>
+    <span class="c1"># Mapeo de espejo: Columnas 1-2-3 se intercambian con 4-5-6</span>
+    <span class="n">mirror_map</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;1&#39;</span><span class="p">:</span> <span class="s1">&#39;4&#39;</span><span class="p">,</span> <span class="s1">&#39;4&#39;</span><span class="p">:</span> <span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="s1">&#39;2&#39;</span><span class="p">:</span> <span class="s1">&#39;5&#39;</span><span class="p">,</span> <span class="s1">&#39;5&#39;</span><span class="p">:</span> <span class="s1">&#39;2&#39;</span><span class="p">,</span> <span class="s1">&#39;3&#39;</span><span class="p">:</span> <span class="s1">&#39;6&#39;</span><span class="p">,</span> <span class="s1">&#39;6&#39;</span><span class="p">:</span> <span class="s1">&#39;3&#39;</span><span class="p">}</span>
+    <span class="n">mirror_codes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">sorted</span><span class="p">([</span><span class="n">mirror_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">c</span><span class="p">]))</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">codes_list</span><span class="p">]</span>
+
+    <span class="n">cell_w</span><span class="p">,</span> <span class="n">cell_h</span><span class="p">,</span> <span class="n">margin</span> <span class="o">=</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="mi">20</span>
+    <span class="n">total_w</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">mirror_codes</span><span class="p">)</span> <span class="o">*</span> <span class="n">cell_w</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">margin</span>
+    <span class="n">total_h</span> <span class="o">=</span> <span class="n">cell_h</span> <span class="o">+</span> <span class="mi">50</span>
+    <span class="n">svg</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;&lt;svg width=&quot;</span><span class="si">{</span><span class="n">total_w</span><span class="si">}</span><span class="s1">&quot; height=&quot;</span><span class="si">{</span><span class="n">total_h</span><span class="si">}</span><span class="s1">&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;&gt;&#39;</span><span class="p">,</span>
+           <span class="sa">f</span><span class="s1">&#39;&lt;rect width=&quot;100%&quot; height=&quot;100%&quot; fill=&quot;white&quot;/&gt;&#39;</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">code</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">mirror_codes</span><span class="p">):</span>
+        <span class="n">svg</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">generar_celda_braille_svg</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">margin</span> <span class="o">+</span> <span class="n">i</span> <span class="o">*</span> <span class="n">cell_w</span><span class="p">,</span> <span class="mi">45</span><span class="p">))</span>
+    <span class="n">svg</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&lt;/svg&gt;&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">app</span><span class="o">.</span><span class="n">response_class</span><span class="p">(</span><span class="n">response</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">svg</span><span class="p">),</span> <span class="n">status</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">mimetype</span><span class="o">=</span><span class="s1">&#39;image/svg+xml&#39;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="health">
 <a class="viewcode-back" href="../api.html#app.health">[documentos]</a>
 <span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/health&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">])</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">health</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Endpoint de health check para verificación de estado del servicio.</span>
-
-<span class="sd">    Este endpoint es utilizado por Docker Compose para monitorear la salud</span>
-<span class="sd">    del contenedor backend.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        tuple: JSON response con los siguientes campos y status code 200:</span>
-<span class="sd">            - status (str): Estado del servicio (healthy).</span>
-<span class="sd">            - service (str): Nombre del servicio (tactilink-backend).</span>
-
-<span class="sd">    Examples:</span>
-<span class="sd">        Response:</span>
-<span class="sd">            &gt;&gt;&gt; {</span>
-<span class="sd">            ...     &quot;status&quot;: &quot;healthy&quot;,</span>
-<span class="sd">            ...     &quot;service&quot;: &quot;tactilink-backend&quot;</span>
-<span class="sd">            ... }</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="s1">&#39;healthy&#39;</span><span class="p">,</span> <span class="s1">&#39;service&#39;</span><span class="p">:</span> <span class="s1">&#39;tactilink-backend&#39;</span><span class="p">}),</span> <span class="mi">200</span></div>
+    <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="s1">&#39;healthy&#39;</span><span class="p">}),</span> <span class="mi">200</span></div>
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="c1"># Solo para desarrollo local (NO se usa en Docker - Docker usa Gunicorn)</span>
     <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">debug</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="s1">&#39;0.0.0.0&#39;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">5000</span><span class="p">)</span>
 </pre></div>
 
@@ -493,7 +347,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Derechos de autor 2025, Villareal Alexis, Bravo Dayanna, Gómez Esteban y Valeriano Josting.</p>
+    <p>&#169; Derechos de autor 2026, JADE.</p>
   </div>
 
   Compilado con <a href="https://www.sphinx-doc.org/">Sphinx</a> usando un

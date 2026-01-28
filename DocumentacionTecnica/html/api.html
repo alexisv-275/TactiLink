@@ -6,14 +6,14 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Referencia de API &mdash; documentación de Tactilink - 1.0.0</title>
+  <title>Referencia de API &mdash; documentación de TactiLink - 2.0.0</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=36c4ab74"></script>
+      <script src="_static/documentation_options.js?v=ea25ecff"></script>
       <script src="_static/doctools.js?v=9bcbadda"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="_static/translations.js?v=f85f4cfb"></script>
@@ -31,7 +31,7 @@
           
           
           <a href="index.html" class="icon icon-home">
-            Tactilink
+            TactiLink
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -47,9 +47,11 @@
 <li><a class="reference internal" href="#app.es_numero"><code class="docutils literal notranslate"><span class="pre">es_numero()</span></code></a></li>
 <li><a class="reference internal" href="#app.generar_celda_braille_svg"><code class="docutils literal notranslate"><span class="pre">generar_celda_braille_svg()</span></code></a></li>
 <li><a class="reference internal" href="#app.generar_senaletica"><code class="docutils literal notranslate"><span class="pre">generar_senaletica()</span></code></a></li>
+<li><a class="reference internal" href="#app.generar_senaletica_espejo"><code class="docutils literal notranslate"><span class="pre">generar_senaletica_espejo()</span></code></a></li>
 <li><a class="reference internal" href="#app.health"><code class="docutils literal notranslate"><span class="pre">health()</span></code></a></li>
+<li><a class="reference internal" href="#app.reverse_api"><code class="docutils literal notranslate"><span class="pre">reverse_api()</span></code></a></li>
+<li><a class="reference internal" href="#app.reverse_transcribe"><code class="docutils literal notranslate"><span class="pre">reverse_transcribe()</span></code></a></li>
 <li><a class="reference internal" href="#app.transcribe_text"><code class="docutils literal notranslate"><span class="pre">transcribe_text()</span></code></a></li>
-<li><a class="reference internal" href="#app.transcribir_character"><code class="docutils literal notranslate"><span class="pre">transcribir_character()</span></code></a></li>
 <li><a class="reference internal" href="#app.transcribir_texto_completo"><code class="docutils literal notranslate"><span class="pre">transcribir_texto_completo()</span></code></a></li>
 </ul>
 </li>
@@ -61,7 +63,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">Tactilink</a>
+          <a href="index.html">TactiLink</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -83,19 +85,11 @@
 <span id="referencia-de-api"></span><h1>Referencia de API<a class="headerlink" href="#module-app" title="Link to this heading"></a></h1>
 <p>Módulo principal de la API TactiLink para transcripción de texto a Braille.</p>
 <p>Este módulo proporciona endpoints REST para convertir texto en español
-a código Braille numérico y generar representaciones SVG de señalética Braille.</p>
-<dl class="simple">
-<dt>Attributes:</dt><dd><dl class="simple">
-<dt>BRAILLE_MAP (dict): Diccionario de mapeo de caracteres a código Braille numérico.</dt><dd><p>Cada clave representa un carácter y su valor el código Braille correspondiente.</p>
-</dd>
-</dl>
-</dd>
-</dl>
+a código Braille numérico y viceversa, cumpliendo con los estándares del proyecto.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="app.es_numero">
 <span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">es_numero</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">caracter</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#es_numero"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#app.es_numero" title="Link to this definition"></a></dt>
-<dd><p>Verifica si un carácter es un dígito numérico.</p>
-<dl class="field-list simple">
+<dd><dl class="field-list simple">
 <dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
 <dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span></p>
 </dd>
@@ -105,30 +99,9 @@ a código Braille numérico y generar representaciones SVG de señalética Brail
 <dl class="py function">
 <dt class="sig sig-object py" id="app.generar_celda_braille_svg">
 <span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">generar_celda_braille_svg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">codigo_braille</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#generar_celda_braille_svg"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#app.generar_celda_braille_svg" title="Link to this definition"></a></dt>
-<dd><p>Genera el SVG de una celda Braille con sus puntos correspondientes.</p>
-<p>Una celda Braille estándar tiene 6 posiciones de puntos organizadas en 
-dos columnas de 3 puntos cada una:</p>
-<dl class="field-list simple">
+<dd><dl class="field-list simple">
 <dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
 <dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span></p>
-</dd>
-</dl>
-<dl>
-<dt>Posiciones:  1  4</dt><dd><p>2  5
-3  6</p>
-</dd>
-<dt>Args:</dt><dd><p>codigo_braille (str): Código numérico Braille (ej: “1”, “12”, “145”, “#”, “6”).
-x (float): Coordenada X de inicio de la celda.
-y (float): Coordenada Y de inicio de la celda.</p>
-</dd>
-<dt>Returns:</dt><dd><p>str: Fragmento SVG con los círculos que representan los puntos activos.</p>
-</dd>
-<dt>Examples:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">generar_celda_braille_svg</span><span class="p">(</span><span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-<span class="go"># Retorna SVG con un círculo en posición 1</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">generar_celda_braille_svg</span><span class="p">(</span><span class="s1">&#39;145&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
-<span class="go"># Retorna SVG con círculos en posiciones 1, 4 y 5</span>
-</pre></div>
-</div>
 </dd>
 </dl>
 </dd></dl>
@@ -136,80 +109,30 @@ y (float): Coordenada Y de inicio de la celda.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="app.generar_senaletica">
 <span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">generar_senaletica</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#generar_senaletica"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#app.generar_senaletica" title="Link to this definition"></a></dt>
-<dd><p>Endpoint para generación de señalética Braille en formato SVG (RG-2).</p>
-<p>Recibe un JSON con el campo “text” y devuelve una representación
-visual SVG de la señalética Braille con puntos táctiles y texto en tinta.</p>
-<p>El SVG generado incluye:
-- Representación visual de celdas Braille con puntos activos e inactivos
-- Texto en tinta (texto original) encima de la representación Braille
-- Formato vectorial escalable sin pérdida de calidad</p>
-<dl>
-<dt>Request JSON:</dt><dd><dl class="simple">
-<dt>text (str): Texto a convertir en señalética. Soporta letras, números,</dt><dd><p>mayúsculas y signos básicos (coma y punto).</p>
-</dd>
-</dl>
-</dd>
-<dt>Returns:</dt><dd><dl class="simple">
-<dt>flask.Response: Documento SVG con la representación visual de la </dt><dd><p>señalética Braille. Content-Type: image/svg+xml.</p>
-</dd>
-</dl>
-</dd>
-<dt>Examples:</dt><dd><dl>
-<dt>Request:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="p">{</span>
-<span class="gp">... </span>    <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;2&quot;</span>
-<span class="gp">... </span><span class="p">}</span>
-</pre></div>
-</div>
-</dd>
-<dt>Response (SVG):</dt><dd><dl class="simple">
-<dt>&lt;svg width=»…» height=»…» viewBox=»…» xmlns=»<a class="reference external" href="http://www.w3.org/2000/svg">http://www.w3.org/2000/svg</a>»&gt;</dt><dd><p>&lt;!– Texto en tinta –&gt;
-&lt;text&gt;2&lt;/text&gt;
-&lt;!– Representación Braille del prefijo numérico # –&gt;
-&lt;circle …/&gt; &lt;!– Puntos para # –&gt;
-&lt;!– Representación Braille del número 2 –&gt;
-&lt;circle …/&gt; &lt;!– Puntos para 2 (código 12) –&gt;</p>
-</dd>
-</dl>
-<p>&lt;/svg&gt;</p>
-</dd>
-<dt>Request:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="p">{</span>
-<span class="gp">... </span>    <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;Hola&quot;</span>
-<span class="gp">... </span><span class="p">}</span>
-</pre></div>
-</div>
-</dd>
-<dt>Response (SVG):</dt><dd><p>SVG con representación Braille de «6 125 135 123 1» 
-(prefijo mayúscula + h + o + l + a)</p>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.generar_senaletica_espejo">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">generar_senaletica_espejo</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#generar_senaletica_espejo"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#app.generar_senaletica_espejo" title="Link to this definition"></a></dt>
+<dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="app.health">
 <span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">health</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#health"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#app.health" title="Link to this definition"></a></dt>
-<dd><p>Endpoint de health check para verificación de estado del servicio.</p>
-<p>Este endpoint es utilizado por Docker Compose para monitorear la salud
-del contenedor backend.</p>
-<dl>
-<dt>Returns:</dt><dd><dl class="simple">
-<dt>tuple: JSON response con los siguientes campos y status code 200:</dt><dd><ul class="simple">
-<li><p>status (str): Estado del servicio (healthy).</p></li>
-<li><p>service (str): Nombre del servicio (tactilink-backend).</p></li>
-</ul>
-</dd>
-</dl>
-</dd>
-<dt>Examples:</dt><dd><dl>
-<dt>Response:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="p">{</span>
-<span class="gp">... </span>    <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;healthy&quot;</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="s2">&quot;service&quot;</span><span class="p">:</span> <span class="s2">&quot;tactilink-backend&quot;</span>
-<span class="gp">... </span><span class="p">}</span>
-</pre></div>
-</div>
-</dd>
-</dl>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.reverse_api">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">reverse_api</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#reverse_api"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#app.reverse_api" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="app.reverse_transcribe">
+<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">reverse_transcribe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">braille_codes_str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#reverse_transcribe"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#app.reverse_transcribe" title="Link to this definition"></a></dt>
+<dd><p>Braille -&gt; Español: Diferencia entre letras y números tras el signo #.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -217,117 +140,15 @@ del contenedor backend.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="app.transcribe_text">
 <span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">transcribe_text</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#transcribe_text"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#app.transcribe_text" title="Link to this definition"></a></dt>
-<dd><p>Endpoint para transcripción de texto a código Braille numérico (RG-1).</p>
-<p>Recibe un JSON con el campo “text” y devuelve su representación en
-código Braille numérico. Soporta letras (a-z), números (0-9) y signos
-básicos de puntuación (coma y punto) en contextos textuales y numéricos.</p>
-<dl>
-<dt>Request JSON:</dt><dd><dl class="simple">
-<dt>text (str): Texto en español a transcribir. Puede contener letras,</dt><dd><p>números, espacios y signos de puntuación (coma y punto).</p>
-</dd>
-</dl>
-</dd>
-<dt>Returns:</dt><dd><dl class="simple">
-<dt>tuple: JSON response con los siguientes campos:</dt><dd><ul class="simple">
-<li><p>input (str): Texto original recibido.</p></li>
-<li><p>braille_codes (str): Códigos Braille separados por espacios.</p></li>
-</ul>
-</dd>
-</dl>
-<p>Status code: 200 si es exitoso, 400 si no se proporciona texto.</p>
-</dd>
-<dt>Raises:</dt><dd><p>400: Si no se proporciona el campo “text” en el JSON.</p>
-</dd>
-<dt>Examples:</dt><dd><dl>
-<dt>Request:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="p">{</span>
-<span class="gp">... </span>    <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;hola&quot;</span>
-<span class="gp">... </span><span class="p">}</span>
-</pre></div>
-</div>
-</dd>
-<dt>Response:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="p">{</span>
-<span class="gp">... </span>    <span class="s2">&quot;input&quot;</span><span class="p">:</span> <span class="s2">&quot;hola&quot;</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="s2">&quot;braille_codes&quot;</span><span class="p">:</span> <span class="s2">&quot;125 135 123 1&quot;</span>
-<span class="gp">... </span><span class="p">}</span>
-</pre></div>
-</div>
-</dd>
-<dt>Request con signos básicos (contexto textual):</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="p">{</span>
-<span class="gp">... </span>    <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;Hola, mundo.&quot;</span>
-<span class="gp">... </span><span class="p">}</span>
-</pre></div>
-</div>
-</dd>
-<dt>Response:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="p">{</span>
-<span class="gp">... </span>    <span class="s2">&quot;input&quot;</span><span class="p">:</span> <span class="s2">&quot;Hola, mundo.&quot;</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="s2">&quot;braille_codes&quot;</span><span class="p">:</span> <span class="s2">&quot;6 125 135 123 1 2 134 136 1345 145 135 3&quot;</span>
-<span class="gp">... </span><span class="p">}</span>
-</pre></div>
-</div>
-</dd>
-<dt>Request con mayúscula:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="p">{</span>
-<span class="gp">... </span>    <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;A&quot;</span>
-<span class="gp">... </span><span class="p">}</span>
-</pre></div>
-</div>
-</dd>
-<dt>Response:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="p">{</span>
-<span class="gp">... </span>    <span class="s2">&quot;input&quot;</span><span class="p">:</span> <span class="s2">&quot;A&quot;</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="s2">&quot;braille_codes&quot;</span><span class="p">:</span> <span class="s2">&quot;6 1&quot;</span>
-<span class="gp">... </span><span class="p">}</span>
-</pre></div>
-</div>
-</dd>
-<dt>Request con números y signos (contexto numérico):</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="p">{</span>
-<span class="gp">... </span>    <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;2.329,724&quot;</span>
-<span class="gp">... </span><span class="p">}</span>
-</pre></div>
-</div>
-</dd>
-<dt>Response:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="p">{</span>
-<span class="gp">... </span>    <span class="s2">&quot;input&quot;</span><span class="p">:</span> <span class="s2">&quot;2.329,724&quot;</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="s2">&quot;braille_codes&quot;</span><span class="p">:</span> <span class="s2">&quot;#12 3 14 12 145 2 1245 12 145&quot;</span>
-<span class="gp">... </span><span class="p">}</span>
-</pre></div>
-</div>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="app.transcribir_character">
-<span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">transcribir_character</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">character</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">anterior_es_numero</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">siguiente_es_numero</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#transcribir_character"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#app.transcribir_character" title="Link to this definition"></a></dt>
-<dd><p>Mapea un carácter individual a su representación en código Braille numérico.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></span></p>
-</dd>
-</dl>
-<dl class="simple">
-<dt>Args:</dt><dd><p>character (str): Carácter a transcribir.
-anterior_es_numero (bool): Indica si el carácter anterior era un número.
-siguiente_es_numero (bool): Indica si el siguiente carácter es un número.</p>
-</dd>
-<dt>Returns:</dt><dd><p>list: Lista de códigos Braille para el carácter.</p>
-</dd>
-</dl>
-</dd></dl>
+<dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="app.transcribir_texto_completo">
 <span class="sig-prename descclassname"><span class="pre">app.</span></span><span class="sig-name descname"><span class="pre">transcribir_texto_completo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">texto</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app.html#transcribir_texto_completo"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#app.transcribir_texto_completo" title="Link to this definition"></a></dt>
-<dd><p>Transcribe una cadena de texto completa a código Braille numérico.</p>
+<dd><p>Español -&gt; Braille con puntos correctos para números.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
 <dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span></p>
-</dd>
-</dl>
-<dl class="simple">
-<dt>Args:</dt><dd><p>texto (str): Texto a transcribir.</p>
-</dd>
-<dt>Returns:</dt><dd><p>str: Cadena con códigos Braille separados por espacios.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -342,7 +163,7 @@ siguiente_es_numero (bool): Indica si el siguiente carácter es un número.</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Derechos de autor 2025, Villareal Alexis, Bravo Dayanna, Gómez Esteban y Valeriano Josting.</p>
+    <p>&#169; Derechos de autor 2026, JADE.</p>
   </div>
 
   Compilado con <a href="https://www.sphinx-doc.org/">Sphinx</a> usando un
