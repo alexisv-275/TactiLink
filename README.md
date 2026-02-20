@@ -17,11 +17,11 @@
 ## 📋 Contenidos
 
 - [El Problema](#-el-problema)
-- [Diseño del Sistema](#-diseño-del-sistema)
+- [Diseño del Sistema](#%EF%B8%8F-diseño-del-sistema)
+- [Flujo de datos](#flujo-de-datos)
 - [Decisiones Técnicas y Trade-offs](#-decisiones-técnicas-y-trade-offs)
 - [Instalación y Uso](#-instalación-y-uso)
 - [Estructura del Proyecto](#-estructura-del-proyecto)
-
 ---
 
 ## 🎯 El Problema
